@@ -9,7 +9,6 @@ usage()
         -h | --help : print usage
     "
 }
-token=$(cat config.txt)
 while [ "$1" != "" ]; do
     case $1 in
         -b  | --base )          base=$2;;
@@ -45,8 +44,10 @@ if [ "$commit" != "" ]
 then
     git commit -m $commit
     git push origin $base
+    exit
 fi
 
+token=$(cat config.txt)
 # submit review
 if [ "$reviewNumber" != "" ]
 then
