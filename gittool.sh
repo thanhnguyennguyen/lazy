@@ -37,13 +37,15 @@ if [ "$base" = "" ]
 then
     echo "Please set your repo with format  account/repo_name"
     echo "eg: gittool -b thanhnguyennguyen/lazy"
+    exit
 fi
+git remote set-url origin git@github.com:$base.git
 
 # commit code and push
 if [ "$commit" != "" ]
 then
-    git commit -m $commit
-    git push origin $base
+    git commit -m "$commit"
+    git push origin
     exit
 fi
 
@@ -60,5 +62,6 @@ then
     response=$(curl -u $token $base/pulls/$reviewNumber/reviews)
     id=response.id
     # submit
-    curl -u $token $base/pulls/reviewNumber/reviews/$id/events/ --data "{\"body\":\"$reviewMessage\",\"event\":\"$review\"}
+    curl -u $token $base/pulls/reviewNumber/reviews/$id/events/ --data "{\"body\":\"$reviewMessage\",\"event\":\"$review\"}"
+    exit
 fi
