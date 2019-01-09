@@ -13,17 +13,7 @@ while [ "$1" != "" ]; do
     case $1 in
         -b  | --base )          base=$2;;
         -d  | --done )          commit=$2;;
-        -r  | --review )        reviewNumber=$2
-                                if [ $3 == "APPROVE" ]
-                                then
-                                    review="APPROVE"
-                                else
-                                    if [ $3 == "REQUEST_CHANGES" ]
-                                    then
-                                        review="REQUEST_CHANGES"
-                                    fi
-                                fi
-                                reviewMessage=$4;;
+        -r  | --review )        reviewNumber=$2;;
         -c  | --comment )       commentNumber=$2
                                 comment=$3;;
         -h | --help )           usage
@@ -50,18 +40,11 @@ then
 fi
 
 token=$(cat config.txt)
-# submit review
+#  review
 if [ "$reviewNumber" != "" ]
 then
-    if [ "$review" = "" ]
-    then
-        echo "Review action must be APPROVE or REQUEST_CHANGES"
-        exit
-    fi
     # start review
-    response=$(curl -u $token $base/pulls/$reviewNumber/reviews)
-    id=response.id
-    # submit
-    curl -u $token $base/pulls/reviewNumber/reviews/$id/events/ --data "{\"body\":\"$reviewMessage\",\"event\":\"$review\"}"
+    response=$(curl -X POST https://api.github.com/repos/$base/pulls/$reviewNumber/reviews -u "$token")
+    (xdg-open https://github.com/$base/pull/$reviewNumber & )
     exit
 fi
