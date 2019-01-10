@@ -2,7 +2,7 @@
 usage()
 {
     echo " gittool
-        -b  | --base [account/repo name]
+        -b  | --base [repo url eg: gittool -b git@github.com:thanhnguyennguyen/lazy.git]
         -d  | --done [your commit message]: commit and push to origin
         -r  | --review [pull request number] [APPROVE|REQUEST_CHANGES]
         -c  | --comment [pull request number] [comment message]
@@ -11,7 +11,8 @@ usage()
 }
 while [ "$1" != "" ]; do
     case $1 in
-        -b  | --base )          base=$2;;
+        -b  | --base )          base=$2
+                                git remote set-url origin $base;;
         -d  | --done )          commit=$2;;
         -r  | --review )        reviewNumber=$2;;
         -c  | --comment )       commentNumber=$2
@@ -23,13 +24,14 @@ while [ "$1" != "" ]; do
     shift
 done
 
+base=$(git config --get remote.origin.url)
 if [ "$base" = "" ]
 then
-    echo "Please set your repo with format  account/repo_name"
-    echo "eg: gittool -b thanhnguyennguyen/lazy"
+    echo "Please set your remote repo"
+    echo "eg: gittool -b git@github.com:thanhnguyennguyen/lazy.git"
     exit
 fi
-git remote set-url origin git@github.com:$base.git
+
 
 # commit code and push
 if [ "$commit" != "" ]
