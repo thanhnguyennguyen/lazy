@@ -5,8 +5,8 @@ usage()
         -b  | --base [repo url eg: gittool -b git@github.com:thanhnguyennguyen/lazy.git]
         -d  | --done [your commit message]: commit and push to origin
         -r  | --review [pull request number]
-        -cp  | --comment [pull request number] [comment message]: comment on a pull request
-        -h | --help : print usage
+        -cp | --comment [pull request number] [comment message]: comment on a pull request
+        -h  | --help : print usage
     "
 }
 
@@ -17,6 +17,7 @@ then
     echo "eg: gittool -b git@github.com:thanhnguyennguyen/lazy.git"
     exit
 fi
+repo=$(echo $base | cut -d':' -f 2 | cut -d'.' -f 1)
 
 while [ "$1" != "" ]; do
     case $1 in
@@ -36,8 +37,8 @@ while [ "$1" != "" ]; do
                                 if [ "$reviewNumber" != "" ]
                                 then
                                     # start review
-                                    response=$(curl -X POST https://api.github.com/repos/$base/pulls/$reviewNumber/reviews -u "$token")
-                                    (xdg-open https://github.com/$base/pull/$reviewNumber & )
+                                    response=$(curl -X POST https://api.github.com/repos/$repo/pulls/$reviewNumber/reviews -u "$token")
+                                    (xdg-open https://github.com/$repo/pull/$reviewNumber & )
                                     exit
                                 fi;;
         -cp  | --comment )      commentNumber=$2
@@ -47,9 +48,21 @@ while [ "$1" != "" ]; do
                                 if [ "$reviewNumber" != "" ]
                                 then
                                     # start review
-                                    response=$(curl -X POST https://api.github.com/repos/$base/pulls/$reviewNumber/reviews -u "$token")
+                                    response=$(curl -X POST https://api.github.com/repos/$repo/pulls/$reviewNumber/reviews -u "$token")
                                     reviewId=response.id
-                                    curl -X POST https://api.github.com/repos/$base/pulls/$reviewNumber/reviews/$reviewId/events/ -u "$token" --data "{\"body\":\"$content\", \"event\":\"COMMENT\"}"
+                                    curl -X POST https://api.github.com/repos/$repo/pulls/$reviewNumber/reviews/$reviewId/events/ -u "$token" --data "{\"body\":\"$content\", \"event\":\"COMMENT\"}"
+                                    exit
+                                fi;;
+        -ni  | --new-issue )    commentNumber=$2
+                                content=$3
+                                token=$(cat config.txt)
+                                #  create an issue
+                                if [ "$reviewNumber" != "" ]
+                                then
+                                    # start review
+                                    response=$(curl -X POST https://api.github.com/repos/$repo/pulls/$reviewNumber/reviews -u "$token")
+                                    reviewId=response.id
+                                    curl -X POST https://api.github.com/repos/$repo/pulls/$reviewNumber/reviews/$reviewId/events/ -u "$token" --data "{\"body\":\"$content\", \"event\":\"COMMENT\"}"
                                     exit
                                 fi;;
         -h  | --help )           usage
