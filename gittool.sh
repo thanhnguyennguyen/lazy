@@ -4,7 +4,7 @@ usage()
     echo " gittool
         -b  | --base [repo url eg: gittool -b git@github.com:thanhnguyennguyen/lazy.git]
         -d  | --done [your commit message]: commit and push to origin
-        -r  | --review [pull request number] [APPROVE|REQUEST_CHANGES]
+        -r  | --review [pull request number]
         -c  | --comment [pull request number] [comment message]
         -h | --help : print usage
     "
@@ -17,7 +17,7 @@ while [ "$1" != "" ]; do
         -r  | --review )        reviewNumber=$2;;
         -c  | --comment )       commentNumber=$2
                                 comment=$3;;
-        -h | --help )           usage
+        -h  | --help )           usage
                                 exit
                                 ;;
     esac
