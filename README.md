@@ -4,11 +4,15 @@
  
  - start_mac.sh: add this script to startup to automatically launch necessary applications when you start your Mac
  - start_ubuntu: add this script to startup to automatically launch necessary applications when you start your PC
- - gittool.sh: automatically commit your code and push to remote github repo (Remember to add stages in advance), start your review.
+ - gittool.sh: 
  You should alias by this command: 
  ```
  alias gittool="path/to/gittool.sh"
  ```
+   - gittool -h: show helps
+   - gittool -d "Your commit message" : automatically commit your code and push to remote github repo (Remember to add stages in advance)
+   - gittool -r [pull request number]: start your review.
+
  
 
  
