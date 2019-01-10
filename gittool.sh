@@ -6,6 +6,10 @@ usage()
         -d  | --done [your commit message]: commit and push to origin
         -r  | --review [pull request number]
         -cp | --comment [pull request number] [comment message]: comment on a pull request
+        -ni | --new-issue [title] [content]: create new issue
+        -ci | --comment-issue [issue number] [content]: comment on an issue
+        -cl | --close-issue [issue number] : close an issue
+        -ai | --assign-issue [issue number] [assignee]: assign an issue to an assignee
         -h  | --help : print usage
     "
 }
@@ -45,27 +49,31 @@ while [ "$1" != "" ]; do
                                 content=$3
                                 token=$(cat config.txt)
                                 #  submit a comment
-                                if [ "$reviewNumber" != "" ]
-                                then
-                                    # start review
-                                    response=$(curl -X POST https://api.github.com/repos/$repo/pulls/$reviewNumber/reviews -u "$token")
-                                    reviewId=response.id
-                                    curl -X POST https://api.github.com/repos/$repo/pulls/$reviewNumber/reviews/$reviewId/events/ -u "$token" --data "{\"body\":\"$content\", \"event\":\"COMMENT\"}"
-                                    exit
-                                fi;;
-        -ni  | --new-issue )    commentNumber=$2
+                                response=$(curl -X POST https://api.github.com/repos/$repo/pulls/$reviewNumber/reviews -u "$token")
+                                reviewId=response.id
+                                curl -X POST https://api.github.com/repos/$repo/pulls/$reviewNumber/reviews/$reviewId/events/ -u "$token" --data "{\"body\":\"$content\", \"event\":\"COMMENT\"}"
+                                exit;;
+        -ni  | --new-issue )    title=$2
+                                body=$3
+                                token=$(cat config.txt)
+                                curl -X POST https://api.github.com/repos/$repo/issues/ -u "$token" --data "{\"title\":\"$title\", \"body\":\"$body\"}"
+                                exit;;
+        -ci  | --comment )      number=$2
                                 content=$3
                                 token=$(cat config.txt)
-                                #  create an issue
-                                if [ "$reviewNumber" != "" ]
-                                then
-                                    # start review
-                                    response=$(curl -X POST https://api.github.com/repos/$repo/pulls/$reviewNumber/reviews -u "$token")
-                                    reviewId=response.id
-                                    curl -X POST https://api.github.com/repos/$repo/pulls/$reviewNumber/reviews/$reviewId/events/ -u "$token" --data "{\"body\":\"$content\", \"event\":\"COMMENT\"}"
-                                    exit
-                                fi;;
-        -h  | --help )           usage
+                                #  submit a comment
+                                curl -X POST https://api.github.com/repos/$repo/issues/$number/comments/ -u "$token" --data "{\"body\":\"$content\"}"
+                                exit;;
+        -ai  | --assign-issue ) number=$2
+                                assignee=$3
+                                token=$(cat config.txt)
+                                curl -X POST https://api.github.com/repos/$repo/issues/$number/assignees/ -u "$token" --data "{\"assignees\":\"$assignee\"}"
+                                exit;;
+        -cl  | --close-issue )  number=$2
+                                token=$(cat config.txt)
+                                curl -X POST https://api.github.com/repos/$repo/issues/$number -u "$token" --data "{\"state\":\"closed\"}"
+                                exit;;
+        -h  | --help )          usage
                                 exit
                                 ;;
     esac
