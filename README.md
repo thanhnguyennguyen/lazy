@@ -10,9 +10,15 @@
           -  `alias gittool="path/to/gittool.sh"`
           - update config file config.txt with format your_git_username:yourtoken (generate your token here https://github.com/settings/tokens/new)
       - Usage:
-          - gittool -h: show helps
-          - gittool -d "Your commit message" : automatically commit your code and push to remote github repo (Remember to add stages in advance)
-          - gittool -r [pull request number]: start your review.
+          - gittool -h | --help : show helps
+          - gittool -d | --done [Your commit message] : automatically commit your code and push to remote github repo (Remember to add stages in advance)
+          - gittool -r | --review [pull request number]: start your review.
+          - gittool -cp | --comment [pull request number] [comment message]: comment on a pull request
+          - gittool -ni | --new-issue [title] [content]: create new issue
+          - gittool -ci | --comment-issue [issue number] [content]: comment on an issue
+          - gittool -cl | --close-issue [issue number] : close an issue
+          - gittool -ai | --assign-issue [issue number] [assignee]: assign an issue to an assignee
+
 
  
 
