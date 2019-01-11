@@ -33,6 +33,7 @@ while [ "$1" != "" ]; do
                                 then
                                     git commit -m "$commit"
                                     git push --set-upstream origin $(git branch | grep \* | cut -d ' ' -f2)
+                                    hub pull-request -b master -m "$commit"
                                     exit
                                 fi;;
         -r  | --review )        reviewNumber=$2

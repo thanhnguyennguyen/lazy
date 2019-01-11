@@ -4,7 +4,8 @@
  
  - start_mac.sh: add this script to startup to automatically launch necessary applications when you start your Mac
  - start_ubuntu: add this script to startup to automatically launch necessary applications when you start your PC
- - gittool.sh: You should alias by this command: `alias gittool="path/to/gittool.sh"`
+ - gittool.sh: (install https://hub.github.com to create pull request)
+ You should alias by this command: `alias gittool="path/to/gittool.sh"`
  Please update config file config.txt with format your_git_username:yourtoken (generate your token here https://github.com/settings/tokens/new)
       - gittool -h: show helps
       - gittool -d "Your commit message" : automatically commit your code and push to remote github repo (Remember to add stages in advance)
