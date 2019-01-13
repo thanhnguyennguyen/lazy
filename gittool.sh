@@ -37,7 +37,7 @@ while [ "$1" != "" ]; do
                                     exit
                                 fi;;
         -r  | --review )        reviewNumber=$2
-                                token=$(cat config.txt)
+                                token=$(cat ~/git/config.txt)
                                 #  start a review
                                 if [ "$reviewNumber" != "" ]
                                 then
@@ -48,7 +48,7 @@ while [ "$1" != "" ]; do
                                 fi;;
         -cp  | --comment )      commentNumber=$2
                                 content=$3
-                                token=$(cat config.txt)
+                                token=$(cat ~/git/config.txt)
                                 #  submit a comment
                                 response=$(curl -X POST https://api.github.com/repos/$repo/pulls/$reviewNumber/reviews -u "$token")
                                 reviewId=response.id
@@ -56,22 +56,22 @@ while [ "$1" != "" ]; do
                                 exit;;
         -ni  | --new-issue )    title=$2
                                 body=$3
-                                token=$(cat config.txt)
+                                token=$(cat ~/git/config.txt)
                                 curl -X POST https://api.github.com/repos/$repo/issues?state=all/ -u "$token" --data "{\"title\":\"$title\", \"body\":\"$body\"}"
                                 exit;;
         -ci  | --comment )      number=$2
                                 content=$3
-                                token=$(cat config.txt)
+                                token=$(cat ~/git/config.txt)
                                 #  submit a comment
                                 curl -X POST https://api.github.com/repos/$repo/issues/$number/comments?state=all/ -u "$token" -d "{\"body\":\"$content\"}"
                                 exit;;
         -ai  | --assign-issue ) number=$2
                                 assignee=$3
-                                token=$(cat config.txt)
+                                token=$(cat ~/git/config.txt)
                                 curl -X POST https://api.github.com/repos/$repo/issues/$number/assignees?state=all/ -u "$token" -d "{\"assignees\":\"$assignee\"}"
                                 exit;;
         -cl  | --close-issue )  number=$2
-                                token=$(cat config.txt)
+                                token=$(cat ~/git/config.txt)
                                 curl -X POST https://api.github.com/repos/$repo/issues/$number?state=all -u "$token" -d "{\"state\":\"closed\"}"
                                 exit;;
         -h  | --help )          usage
