@@ -10,6 +10,7 @@ usage()
         -ci | --comment-issue [issue number] [content]: comment on an issue
         -cl | --close-issue [issue number] : close an issue
         -ai | --assign-issue [issue number] [assignee]: assign an issue to an assignee
+        -s  | --sync : sync fork repo with upstream
         -h  | --help : print usage
     "
 }
@@ -73,6 +74,11 @@ while [ "$1" != "" ]; do
         -cl  | --close-issue )  number=$2
                                 token=$(cat ~/git/config.txt)
                                 curl -X POST https://api.github.com/repos/$repo/issues/$number?state=all -u "$token" -d "{\"state\":\"closed\"}"
+                                exit;;
+        -s   | --sync )         git checkout master
+                                git fetch upstream
+                                git pull upstream master
+                                git push orign master -f
                                 exit;;
         -h  | --help )          usage
                                 exit
