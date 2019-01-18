@@ -47,13 +47,13 @@ while [ "$1" != "" ]; do
                                     (xdg-open https://github.com/$repo/pull/$reviewNumber & )
                                     exit
                                 fi;;
-        -cp  | --comment )      commentNumber=$2
+        -cp  | --comment )      pullNumber=$2
                                 content=$3
                                 token=$(cat ~/git/config.txt)
                                 #  submit a comment
-                                response=$(curl -X POST https://api.github.com/repos/$repo/pulls/$reviewNumber/reviews -u "$token")
-                                reviewId=response.id
-                                curl -X POST https://api.github.com/repos/$repo/pulls/$reviewNumber/reviews/$reviewId/events/ -u "$token" --data "{\"body\":\"$content\", \"event\":\"COMMENT\"}"
+                                reviewId=$(curl -s -X POST https://api.github.com/repos/$repo/pulls/$pullNumber/reviews -u "$token" | jq -r '.id')
+                                echo https://api.github.com/repos/$repo/pulls/$pullNumber/reviews/$reviewId/events/ 
+                                curl -X POST https://api.github.com/repos/$repo/pulls/$pullNumber/reviews/$reviewId/events -u "$token" --data "{\"body\":\"$content\", \"event\":\"COMMENT\"}"
                                 exit;;
         -ni  | --new-issue )    title=$2
                                 body=$3
