@@ -78,7 +78,7 @@ while [ "$1" != "" ]; do
         -s   | --sync )         git checkout master
                                 git fetch upstream
                                 git pull upstream master
-                                git push orign master -f
+                                git push origin master -f
                                 exit;;
         -h  | --help )          usage
                                 exit
