@@ -19,7 +19,7 @@
           - gittool -cl | --close-issue [issue number] : close an issue
           - gittool -ai | --assign-issue [issue number] [assignee]: assign an issue to an assignee
 
-
+   
  
 
  
