@@ -8,7 +8,7 @@ usage()
         -cp | --comment [pull request number] [comment message]: comment on a pull request
         -ni | --new-issue [title] [content]: create new issue
         -ci | --comment-issue [issue number] [content]: comment on an issue
-        -cl | --close-issue [issue number] : close an issue
+        -cl | --close [issue number or pull request number] : close an issue/pull request
         -ai | --assign-issue [issue number] [assignee]: assign an issue to an assignee
         -s  | --sync : sync fork repo with upstream
         -h  | --help : print usage
@@ -71,7 +71,7 @@ while [ "$1" != "" ]; do
                                 token=$(cat ~/git/config.txt)
                                 curl -X POST https://api.github.com/repos/$repo/issues/$number/assignees?state=all/ -u "$token" -d "{\"assignees\":\"$assignee\"}"
                                 exit;;
-        -cl  | --close-issue )  number=$2
+        -cl  | --close       )  number=$2
                                 token=$(cat ~/git/config.txt)
                                 curl -X POST https://api.github.com/repos/$repo/issues/$number?state=all -u "$token" -d "{\"state\":\"closed\"}"
                                 exit;;
