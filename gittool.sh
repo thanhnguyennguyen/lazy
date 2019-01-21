@@ -15,7 +15,15 @@ usage()
     "
 }
 
-base=$(git config --get remote.origin.url)
+upstream=$(git config --get remote.upstream.url)
+origin=$(git config --get remote.origin.url) 
+if [ "$upstream" != "" ]
+then
+    base="$upstream"
+else
+    base="$origin"
+fi
+echo Your current base is $base
 if [ "$base" = "" ]
 then
     echo "Please set your remote repo"

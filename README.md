@@ -16,8 +16,9 @@
           - gittool -cp | --comment [pull request number] [comment message]: comment on a pull request
           - gittool -ni | --new-issue [title] [content]: create new issue
           - gittool -ci | --comment-issue [issue number] [content]: comment on an issue
-          - gittool -cl | --close-issue [issue number] : close an issue
+          - gittool -cl | --close-issue [issue or pull request number] : close an issue/pull request
           - gittool -ai | --assign-issue [issue number] [assignee]: assign an issue to an assignee
+          - gittool -s  | --sync : update fork repo with upstream
 
 
  
