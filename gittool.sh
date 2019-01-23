@@ -12,6 +12,7 @@ usage()
           - gittool -cl | --close-issue [issue/pull request number] : close an issue/pull request
           - gittool -a  | --assign [issue/pull request number] [assignee]: assign an issue/pull request to an assignee
           - gittool -l  | --label [issue/pull request number] [label name] : label an issue/ pull request
+          - gittool -rl | --remove-label [issue/pull request number] [label name] : remove a label from an issue/ pull request
           - gittool -h  | --help : print usage
     "
 }
@@ -84,6 +85,11 @@ while [ "$1" != "" ]; do
                                 label=$3
                                 token=$(cat ~/git/config.txt)
                                 curl -X POST https://api.github.com/repos/$repo/issues/$number/labels?state=all/ -u "$token" -d "{\"labels\":[\"$label\"]}"
+                                exit;;
+        -rl  | --remove-label ) number=$2
+                                label=$3
+                                token=$(cat ~/git/config.txt)
+                                curl -X DELETE https://api.github.com/repos/$repo/issues/$number/labels?state=all/$label -u "$token"
                                 exit;;
         -cl  | --close       )  number=$2
                                 token=$(cat ~/git/config.txt)
