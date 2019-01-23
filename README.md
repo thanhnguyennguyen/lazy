@@ -10,14 +10,17 @@
           -  `alias gittool="path/to/gittool.sh"`
           - update config file ~/git/config.txt with format your_git_username:yourtoken (generate your token here https://github.com/settings/tokens/new)
       - Usage:
-          - gittool -h | --help : show helps
-          - gittool -d | --done [Your commit message] : automatically commit your code and push to remote github repo (Remember to add stages in advance)
-          - gittool -r | --review [pull request number]: start your review.
-          - gittool -cp | --comment [pull request number] [comment message]: comment on a pull request
+          - gittool -h  | --help : show helps
+          - gittool -d  | --done [Your commit message] : automatically commit your code and push to remote github repo (Remember to add stages in advance)
+          - gittool -r  | --review [pull request number]: start your review.
+          - gittool -ap | --approve-pull [pull request number] [comment message]: approve a pull request with a message
+          - gittool -rp | --reject-pull [pull request number] [comment message]: reject a pull request with a message
           - gittool -ni | --new-issue [title] [content]: create new issue
-          - gittool -ci | --comment-issue [issue number] [content]: comment on an issue
-          - gittool -cl | --close-issue [issue number] : close an issue
-          - gittool -ai | --assign-issue [issue number] [assignee]: assign an issue to an assignee
+          - gittool -c  | --comment [issue/pull request number] [content]: comment on an issue/pull request
+          - gittool -cl | --close-issue [issue/pull request number] : close an issue/pull request
+          - gittool -a  | --assign [issue/ pull request number] [assignee]: assign an issue/pull request to an assignee
+          - gittool -l  | --label [issue/pull request number] [label name] : label an issue/ pull request
+          - gittool -h  | --help : print usage
 
 
  
