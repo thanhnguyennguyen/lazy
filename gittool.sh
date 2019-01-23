@@ -13,7 +13,9 @@ usage()
           - gittool -a  | --assign [issue/pull request number] [assignee]: assign an issue/pull request to an assignee
           - gittool -l  | --label [issue/pull request number] [label name] : label an issue/ pull request
           - gittool -rl | --remove-label [issue/pull request number] [label name] : remove a label from an issue/ pull request
+          - gittool -m  | --merge [pull request number]: merge a pull request
           - gittool -h  | --help : print usage
+          - gittool -v  | --version : print version
     "
 }
 
@@ -94,6 +96,10 @@ while [ "$1" != "" ]; do
         -cl  | --close       )  number=$2
                                 token=$(cat ~/git/config.txt)
                                 curl -X POST https://api.github.com/repos/$repo/issues/$number?state=all -u "$token" -d "{\"state\":\"closed\"}"
+                                exit;;
+        -m  | --merge       )   number=$2
+                                token=$(cat ~/git/config.txt)
+                                curl -X PUT https://api.github.com/repos/$repo/pulls/$number/merge -u "$token"
                                 exit;;
         -s   | --sync )         git checkout master
                                 git fetch upstream

@@ -20,7 +20,9 @@
           - gittool -cl | --close-issue [issue/pull request number] : close an issue/pull request
           - gittool -a  | --assign [issue/ pull request number] [assignee]: assign an issue/pull request to an assignee
           - gittool -l  | --label [issue/pull request number] [label name] : label an issue/ pull request
+          - gittool -m  | --merge [pull request number]: merge a pull request
           - gittool -h  | --help : print usage
+          - gittool -v  | --version : print version
 
 
  
