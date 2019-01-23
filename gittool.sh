@@ -10,7 +10,8 @@ usage()
           - gittool -ni | --new-issue [title] [content]: create new issue
           - gittool -c  | --comment [issue/pull request number] [content]: comment on an issue/pull request
           - gittool -cl | --close-issue [issue/pull request number] : close an issue/pull request
-          - gittool -ai | --assign-issue [issue number] [assignee]: assign an issue to an assignee
+          - gittool -a  | --assign [issue/pull request number] [assignee]: assign an issue/pull request to an assignee
+          - gittool -l  | --label [issue/pull request number] [label name] : label an issue/ pull request
           - gittool -h  | --help : print usage
     "
 }
@@ -74,10 +75,15 @@ while [ "$1" != "" ]; do
                                 #  submit a comment
                                 curl -X POST https://api.github.com/repos/$repo/issues/$number/comments?state=all/ -u "$token" -d "{\"body\":\"$content\"}"
                                 exit;;
-        -ai  | --assign-issue ) number=$2
+        -a  | --assign ) number=$2
                                 assignee=$3
                                 token=$(cat ~/git/config.txt)
                                 curl -X POST https://api.github.com/repos/$repo/issues/$number/assignees?state=all/ -u "$token" -d "{\"assignees\":\"$assignee\"}"
+                                exit;;
+        -l  | --label )         number=$2
+                                label=$3
+                                token=$(cat ~/git/config.txt)
+                                curl -X POST https://api.github.com/repos/$repo/issues/$number/labels?state=all/ -u "$token" -d "{\"labels\":[\"$label\"]}"
                                 exit;;
         -cl  | --close       )  number=$2
                                 token=$(cat ~/git/config.txt)

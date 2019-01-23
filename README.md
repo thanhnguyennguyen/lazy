@@ -18,7 +18,8 @@
           - gittool -ni | --new-issue [title] [content]: create new issue
           - gittool -c  | --comment [issue/pull request number] [content]: comment on an issue/pull request
           - gittool -cl | --close-issue [issue/pull request number] : close an issue/pull request
-          - gittool -ai | --assign-issue [issue number] [assignee]: assign an issue to an assignee
+          - gittool -a  | --assign [issue/ pull request number] [assignee]: assign an issue/pull request to an assignee
+          - gittool -l  | --label [issue/pull request number] [label name] : label an issue/ pull request
           - gittool -h  | --help : print usage
 
 
