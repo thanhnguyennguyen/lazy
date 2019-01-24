@@ -18,21 +18,25 @@ usage()
           - gittool -v  | --version : print version
     "
 }
-
-base=$(git config --get remote.origin.url)
-if [ "$base" = "" ]
-then
-    echo "Please set your remote repo"
-    echo "eg: gittool -b git@github.com:thanhnguyennguyen/lazy.git"
-    exit
-fi
+base=""
+checkRepo()
+{
+    base=$(git config --get remote.origin.url)
+    if [ "$base" = "" ]
+    then
+        echo "No git config found. Please go to your git project or set your remote repo"
+        echo "eg: gittool -b git@github.com:thanhnguyennguyen/lazy.git"
+        exit
+    fi
+}
 repo=$(echo $base | cut -d':' -f 2 | cut -d'.' -f 1)
 
 while [ "$1" != "" ]; do
     case $1 in
         -b  | --base )          base=$2
                                 git remote set-url origin $base;;
-        -d  | --done )          commit=$2
+        -d  | --done )          checkRepo
+                                commit=$2
                                 # commit code and push
                                 if [ "$commit" != "" ]
                                 then
@@ -41,7 +45,8 @@ while [ "$1" != "" ]; do
                                     hub pull-request -b master -m "$commit"
                                     exit
                                 fi;;
-        -r  | --review )        reviewNumber=$2
+        -r  | --review )        checkRepo
+                                reviewNumber=$2
                                 token=$(cat ~/git/config.txt)
                                 #  start a review
                                 if [ "$reviewNumber" != "" ]
@@ -51,7 +56,8 @@ while [ "$1" != "" ]; do
                                     (xdg-open https://github.com/$repo/pull/$reviewNumber & )
                                     exit
                                 fi;;
-        -ap  | --approve-pull ) pullNumber=$2
+        -ap  | --approve-pull ) checkRepo
+                                pullNumber=$2
                                 content=$3
                                 token=$(cat ~/git/config.txt)
                                 #  submit a comment
@@ -59,7 +65,8 @@ while [ "$1" != "" ]; do
                                 echo https://api.github.com/repos/$repo/pulls/$pullNumber/reviews/$reviewId/events/ 
                                 curl -X POST https://api.github.com/repos/$repo/pulls/$pullNumber/reviews/$reviewId/events -u "$token" --data "{\"body\":\"$content\", \"event\":\"APPROVE\"}"
                                 exit;;
-        -rp  | --reject-pull )  pullNumber=$2
+        -rp  | --reject-pull )  checkRepo
+                                pullNumber=$2
                                 content=$3
                                 token=$(cat ~/git/config.txt)
                                 #  submit a comment
@@ -67,41 +74,49 @@ while [ "$1" != "" ]; do
                                 echo https://api.github.com/repos/$repo/pulls/$pullNumber/reviews/$reviewId/events/ 
                                 curl -X POST https://api.github.com/repos/$repo/pulls/$pullNumber/reviews/$reviewId/events -u "$token" --data "{\"body\":\"$content\", \"event\":\"REQUEST_CHANGES\"}"
                                 exit;;
-        -ni  | --new-issue )    title=$2
+        -ni  | --new-issue )    checkRepo
+                                title=$2
                                 body=$3
                                 token=$(cat ~/git/config.txt)
                                 curl -X POST https://api.github.com/repos/$repo/issues?state=all/ -u "$token" --data "{\"title\":\"$title\", \"body\":\"$body\"}"
                                 exit;;
-        -c  | --comment )      number=$2
+        -c  | --comment )       checkRepo
+                                number=$2
                                 content=$3
                                 token=$(cat ~/git/config.txt)
                                 #  submit a comment
                                 curl -X POST https://api.github.com/repos/$repo/issues/$number/comments?state=all/ -u "$token" -d "{\"body\":\"$content\"}"
                                 exit;;
         -a  | --assign ) number=$2
+                                checkRepo
                                 assignee=$3
                                 token=$(cat ~/git/config.txt)
                                 curl -X POST https://api.github.com/repos/$repo/issues/$number/assignees?state=all/ -u "$token" -d "{\"assignees\":\"$assignee\"}"
                                 exit;;
-        -l  | --label )         number=$2
+        -l  | --label )         checkRepo
+                                number=$2
                                 label=$3
                                 token=$(cat ~/git/config.txt)
                                 curl -X POST https://api.github.com/repos/$repo/issues/$number/labels?state=all/ -u "$token" -d "{\"labels\":[\"$label\"]}"
                                 exit;;
-        -rl  | --remove-label ) number=$2
+        -rl  | --remove-label ) checkRepo
+                                number=$2
                                 label=$3
                                 token=$(cat ~/git/config.txt)
                                 curl -X DELETE https://api.github.com/repos/$repo/issues/$number/labels?state=all/$label -u "$token"
                                 exit;;
-        -cl  | --close       )  number=$2
+        -cl  | --close       )  checkRepo
+                                number=$2
                                 token=$(cat ~/git/config.txt)
                                 curl -X POST https://api.github.com/repos/$repo/issues/$number?state=all -u "$token" -d "{\"state\":\"closed\"}"
                                 exit;;
-        -m  | --merge       )   number=$2
+        -m  | --merge       )   checkRepo
+                                number=$2
                                 token=$(cat ~/git/config.txt)
                                 curl -X PUT https://api.github.com/repos/$repo/pulls/$number/merge -u "$token"
                                 exit;;
-        -s   | --sync )         git checkout master
+        -s   | --sync )         checkRepo
+                                git checkout master
                                 git fetch upstream
                                 git pull upstream master
                                 git push origin master -f
