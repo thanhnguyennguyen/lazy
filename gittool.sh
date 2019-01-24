@@ -30,7 +30,7 @@ checkRepo()
     fi
     repo=$(echo $base | cut -d':' -f 2 | cut -d'.' -f 1)
 }
-
+content="(This content is created via Gittool) \n"
 while [ "$1" != "" ]; do
     case $1 in
         -b  | --base )          base=$2
@@ -58,7 +58,7 @@ while [ "$1" != "" ]; do
                                 fi;;
         -ap  | --approve-pull ) checkRepo
                                 pullNumber=$2
-                                content=$3
+                                content=$content$3
                                 token=$(cat ~/git/config.txt)
                                 #  submit a comment
                                 reviewId=$(curl -s -X POST https://api.github.com/repos/$repo/pulls/$pullNumber/reviews -u "$token" | jq -r '.id')
@@ -67,7 +67,7 @@ while [ "$1" != "" ]; do
                                 exit;;
         -rp  | --reject-pull )  checkRepo
                                 pullNumber=$2
-                                content=$3
+                                content=$content$3
                                 token=$(cat ~/git/config.txt)
                                 #  submit a comment
                                 reviewId=$(curl -s -X POST https://api.github.com/repos/$repo/pulls/$pullNumber/reviews -u "$token" | jq -r '.id')
@@ -76,13 +76,13 @@ while [ "$1" != "" ]; do
                                 exit;;
         -ni  | --new-issue )    checkRepo
                                 title=$2
-                                body=$3
+                                body=$content$3
                                 token=$(cat ~/git/config.txt)
                                 curl -X POST https://api.github.com/repos/$repo/issues?state=all/ -u "$token" --data "{\"title\":\"$title\", \"body\":\"$body\"}"
                                 exit;;
         -c  | --comment )       checkRepo
                                 number=$2
-                                content=$3
+                                content=$content$3
                                 token=$(cat ~/git/config.txt)
                                 #  submit a comment
                                 curl -X POST https://api.github.com/repos/$repo/issues/$number/comments?state=all/ -u "$token" -d "{\"body\":\"$content\"}"
@@ -94,7 +94,6 @@ while [ "$1" != "" ]; do
                                 curl -X POST https://api.github.com/repos/$repo/issues/$number/assignees?state=all/ -u "$token" -d "{\"assignees\":\"$assignee\"}"
                                 exit;;
         -l  | --label )         checkRepo
-        echo $base
                                 number=$2
                                 label=$3
                                 token=$(cat ~/git/config.txt)
