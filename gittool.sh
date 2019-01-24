@@ -28,8 +28,8 @@ checkRepo()
         echo "eg: gittool -b git@github.com:thanhnguyennguyen/lazy.git"
         exit
     fi
+    repo=$(echo $base | cut -d':' -f 2 | cut -d'.' -f 1)
 }
-repo=$(echo $base | cut -d':' -f 2 | cut -d'.' -f 1)
 
 while [ "$1" != "" ]; do
     case $1 in
@@ -94,6 +94,7 @@ while [ "$1" != "" ]; do
                                 curl -X POST https://api.github.com/repos/$repo/issues/$number/assignees?state=all/ -u "$token" -d "{\"assignees\":\"$assignee\"}"
                                 exit;;
         -l  | --label )         checkRepo
+        echo $base
                                 number=$2
                                 label=$3
                                 token=$(cat ~/git/config.txt)
