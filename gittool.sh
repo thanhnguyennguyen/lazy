@@ -35,8 +35,8 @@ checkRepo()
 createPull()
 {   
     baseBranch=$1
-    title=$2
-    body=$content$3
+    title="$2"
+    body="$content$3"
     currentBranch=$(git branch | grep \* | cut -d ' ' -f2)
     curl -X POST https://api.github.com/repos/$repo/pulls -u "$token" -d "{\"title\":\"$title\", \"base\":\"$baseBranch\", \"head\":\"$currentBranch\", \"body\": \"$body\"}"
 }
@@ -52,7 +52,7 @@ while [ "$1" != "" ]; do
                                 then
                                     git commit -m "$commitMessage"
                                     git push --set-upstream origin $(git branch | grep \* | cut -d ' ' -f2)
-                                    createPull master $commitMessage $commitMessage
+                                    createPull master "$commitMessage" "$commitMessage"
                                     exit
                                 fi;;
         -r  | --review )        checkRepo
