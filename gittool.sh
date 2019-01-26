@@ -19,6 +19,8 @@ usage()
           - gittool -op ( --open-pullrequests): get list of open pull request
           - gittool -oi ( --open-issues) : get list of open issues of current repository
           - gittool -ai ( --assign-issues) : get list of open issues assigned to me
+          - gittool -t  ( --tag) [tag name] [release name] : tag and publish a release
+          - gittool --releases  : list all releases
           - gittool -v  | --version : print version
     "
 }
@@ -168,8 +170,24 @@ while [ "$1" != "" ]; do
                                 done
                                 exit
                                 ;;
+        -t | --tag )            checkRepo
+                                tagName=$2
+                                releaseName=$3
+                                curl -X POST https://api.github.com/repos/$repo/releases -u "$token" -d "{\"tag_name\": \"$tagName\", \"name\":\"$releaseName\"}"
+                                exit
+                                ;;
+        --releases )            checkRepo
+                                response=$(curl -X GET https://api.github.com/repos/$repo/releases -u "$token" | jq -r ".[] | .tag_name, .name, .html_url ")
+                                for i in "${response}"
+                                do
+                                    echo "$i\n"
+                                done
+                                exit
+                                ;;
     esac
-    shift
+        echo "Invalid option!"
+        usage
+        shift
 done
 
 
