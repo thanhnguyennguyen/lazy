@@ -140,6 +140,12 @@ while [ "$1" != "" ]; do
                                 pr=$2 
                                 reviewer=$3
                                 curl -X POST https://api.github.com/repos/$repo/pulls/$pr/requested_reviewers -u "$token" -d "{\"reviewers\":[\"$reviewer\"]}"
+                                exit
+                                ;;
+        -pr | --pull-request ) checkRepo
+                                curl -X GET https://api.github.com/repos/$repo/pulls -u "$token"
+                                exit
+                                ;;
     esac
     shift
 done
