@@ -16,6 +16,8 @@ usage()
           - gittool -m  | --merge [pull request number]: merge a pull request
           - gittool -p  ( --pull ) [base branch] [title] [content (optional)]
           - gittool -rr ( --review-request) [pull number] [reviewer] : request a review
+          - gittool -op ( --open-pullrequests): get list of open pull request
+          - gittool -oi ( --open-issues) : get list of open issues of current repository
           - gittool -v  | --version : print version
     "
 }
@@ -142,11 +144,19 @@ while [ "$1" != "" ]; do
                                 curl -X POST https://api.github.com/repos/$repo/pulls/$pr/requested_reviewers -u "$token" -d "{\"reviewers\":[\"$reviewer\"]}"
                                 exit
                                 ;;
-        -pr | --pull-request ) checkRepo
+        -op | --open-pullrequests ) checkRepo
                                 response=$(curl -X GET https://api.github.com/repos/$repo/pulls -u "$token" | jq -r ".[] | .title, .url ")
                                 for i in "${response}"
                                 do
-                                    echo $i
+                                    echo "$i\n"
+                                done
+                                exit
+                                ;;
+        -oi | --open-issues ) checkRepo
+                                response=$(curl -X GET https://api.github.com/repos/$repo/issues -u "$token" | jq -r ".[] | .title, .url ")
+                                for i in "${response}"
+                                do
+                                    echo "$i\n"
                                 done
                                 exit
                                 ;;
