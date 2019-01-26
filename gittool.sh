@@ -15,6 +15,7 @@ usage()
           - gittool -rl | --remove-label [issue/pull request number] [label name] : remove a label from an issue/ pull request
           - gittool -m  | --merge [pull request number]: merge a pull request
           - gittool -p  ( --pull ) [base branch] [title] [content (optional)]
+          - gittool -rr ( --review-request) [pull number] [reviewer] : request a review
           - gittool -v  | --version : print version
     "
 }
@@ -135,6 +136,9 @@ while [ "$1" != "" ]; do
                                 createPull $2 $3 $4
                                 exit
                                 ;;
+        -rr | --review-request ) pr=$2 
+                                reviewer=$3
+                                curl -X POST https://api.github.com/repos/$repo/pulls/$pr/requested_reviewers -u "$token" -d "{\"reviewers\":\"$reviewer\"}"
     esac
     shift
 done
