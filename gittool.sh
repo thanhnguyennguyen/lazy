@@ -18,6 +18,7 @@ usage()
           - gittool -rr ( --review-request) [pull number] [reviewer] : request a review
           - gittool -op ( --open-pullrequests): get list of open pull request
           - gittool -oi ( --open-issues) : get list of open issues of current repository
+          - gittool -ai ( --assign-issues) : get list of open issues assigned to me
           - gittool -v  | --version : print version
     "
 }
@@ -154,6 +155,13 @@ while [ "$1" != "" ]; do
                                 ;;
         -oi | --open-issues ) checkRepo
                                 response=$(curl -X GET https://api.github.com/repos/$repo/issues -u "$token" | jq -r ".[] | .title, .url ")
+                                for i in "${response}"
+                                do
+                                    echo "$i\n"
+                                done
+                                exit
+                                ;;
+        -ai | --assign-issues ) response=$(curl -X GET https://api.github.com/user/issues -u "$token" | jq -r ".[] | .title, .url ")
                                 for i in "${response}"
                                 do
                                     echo "$i\n"
