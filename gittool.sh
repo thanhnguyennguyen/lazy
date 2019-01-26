@@ -127,8 +127,8 @@ while [ "$1" != "" ]; do
         -m  | --merge       )   checkRepo
                                 number=$2
                                 curl -X PUT https://api.github.com/repos/$repo/pulls/$number/merge -u "$token"
-                                gittool -rl $number "awaiting_review"
-                                gittool --l $number "done"
+                                $0 -rl $number "awaiting_review"
+                                $0 -l $number "done"
                                 exit;;
         -s   | --sync )         checkRepo
                                 git checkout master
