@@ -143,7 +143,11 @@ while [ "$1" != "" ]; do
                                 exit
                                 ;;
         -pr | --pull-request ) checkRepo
-                                curl -X GET https://api.github.com/repos/$repo/pulls -u "$token"
+                                response=$(curl -X GET https://api.github.com/repos/$repo/pulls -u "$token" | jq -r ".[] | .title, .url ")
+                                for i in "${response}"
+                                do
+                                    echo $i
+                                done
                                 exit
                                 ;;
     esac
