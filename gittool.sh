@@ -47,8 +47,11 @@ createPull()
     baseBranch=$1
     title="$2"
     body="$content$3"
+    currentUser=$(echo $base | cut -d':' -f 2 | cut -d'/' -f 1)
     currentBranch=$(git branch | grep \* | cut -d ' ' -f2)
-    curl -X POST https://api.github.com/repos/$repo/pulls -u "$token" -d "{\"title\":\"$title\", \"base\":\"$baseBranch\", \"head\":\"$currentBranch\", \"body\": \"$body\"}"
+    response=$(curl -X POST https://api.github.com/repos/$repo/pulls -u "$token" -d "{\"title\":\"$title\", \"base\":\"$baseBranch\", \"head\":\"$currentBranch\", \"body\": \"$body\"}" | jq -r '.number')
+    gittool -a $response $currentUser
+    gittool -l $response awaiting_review
 }
 content="(This content is created via Gittool) \n"
 while [ "$1" != "" ]; do
@@ -124,6 +127,8 @@ while [ "$1" != "" ]; do
         -m  | --merge       )   checkRepo
                                 number=$2
                                 curl -X PUT https://api.github.com/repos/$repo/pulls/$number/merge -u "$token"
+                                gittool -rl $number "awaiting_review"
+                                gittool --l $number "done"
                                 exit;;
         -s   | --sync )         checkRepo
                                 git checkout master
