@@ -146,7 +146,7 @@ while [ "$1" != "" ]; do
                                 exit
                                 ;;
         -op | --open-pullrequests ) checkRepo
-                                response=$(curl -X GET https://api.github.com/repos/$repo/pulls -u "$token" | jq -r ".[] | .title, .url ")
+                                response=$(curl -X GET https://api.github.com/repos/$repo/pulls -u "$token" | jq -r ".[] | .title, .html_url ")
                                 for i in "${response}"
                                 do
                                     echo "$i\n"
@@ -154,14 +154,14 @@ while [ "$1" != "" ]; do
                                 exit
                                 ;;
         -oi | --open-issues ) checkRepo
-                                response=$(curl -X GET https://api.github.com/repos/$repo/issues -u "$token" | jq -r ".[] | .title, .url ")
+                                response=$(curl -X GET https://api.github.com/repos/$repo/issues -u "$token" | jq -r ".[] | .title, .html_url ")
                                 for i in "${response}"
                                 do
                                     echo "$i\n"
                                 done
                                 exit
                                 ;;
-        -ai | --assign-issues ) response=$(curl -X GET https://api.github.com/user/issues -u "$token" | jq -r ".[] | .title, .url ")
+        -ai | --assign-issues ) response=$(curl -X GET https://api.github.com/user/issues -u "$token" | jq -r ".[] | .title, .html_url ")
                                 for i in "${response}"
                                 do
                                     echo "$i\n"
