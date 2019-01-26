@@ -2,23 +2,27 @@
 usage()
 {
     echo " gittool:
-          - gittool -h  ( --help ) : show helps
-          - gittool -d  ( --done ) [Your commit message] : automatically commit your code and push to remote github repo (Remember to add stages in advance)
-          - gittool -r  ( --review )[pull request number]: start your review.
-          - gittool -ap ( --approve-pull  ) [pull request number] [comment message]: approve a pull request with a message
-          - gittool -rp ( --reject-pull )[pull request number] [comment message]: reject a pull request with a message
-          - gittool -ni ( --new-issue )[title] [content]: create new issue
-          - gittool -c  ( --comment )[issue/pull request number] [content]: comment on an issue/pull request
-          - gittool -cl ( --close-issue ) [issue/pull request number] : close an issue/pull request
-          - gittool -a  ( --assign )[issue/pull request number] [assignee]: assign an issue/pull request to an assignee
-          - gittool -l  ( --label ) [issue/pull request number] [label name] : label an issue/ pull request
-          - gittool -rl ( --remove-label ) [issue/pull request number] [label name] : remove a label from an issue/ pull request
-          - gittool -m  ( --merge ) [pull request number]: merge a pull request
+          - gittool -h  | --help : show helps
+          - gittool -d  | --done [Your commit message] : automatically commit your code and push to remote github repo (Remember to add stages in advance)
+          - gittool -r  | --review [pull request number]: start your review.
+          - gittool -ap | --approve-pull [pull request number] [comment message]: approve a pull request with a message
+          - gittool -rp | --reject-pull [pull request number] [comment message]: reject a pull request with a message
+          - gittool -i  | --issue [title] [content]: create new issue
+          - gittool -c  | --comment [issue/pull request number] [content]: comment on an issue/pull request
+          - gittool -cl | --close-issue [issue/pull request number] : close an issue/pull request
+          - gittool -a  | --assign [issue/pull request number] [assignee]: assign an issue/pull request to an assignee
+          - gittool -l  | --label [issue/pull request number] [label name] : label an issue/ pull request
+          - gittool -rl | --remove-label [issue/pull request number] [label name] : remove a label from an issue/ pull request
+          - gittool -m  | --merge [pull request number]: merge a pull request
           - gittool -p  ( --pull ) [base branch] [title] [content (optional)]
-          - gittool -h  ( --help ) print usage
-          - gittool -v  ( --version ) print version
+          - gittool -v  | --version : print version
     "
 }
+if [ "$1" == "" ]
+then
+    usage
+    exit
+fi
 base=""
 token=$(cat ~/git/config.txt)
 checkRepo()
@@ -81,7 +85,7 @@ while [ "$1" != "" ]; do
                                 echo https://api.github.com/repos/$repo/pulls/$pullNumber/reviews/$reviewId/events/ 
                                 curl -X POST https://api.github.com/repos/$repo/pulls/$pullNumber/reviews/$reviewId/events -u "$token" --data "{\"body\":\"$content\", \"event\":\"REQUEST_CHANGES\"}"
                                 exit;;
-        -ni  | --new-issue )    checkRepo
+        -i  | --issue )    checkRepo
                                 title=$2
                                 body=$content$3
                                 curl -X POST https://api.github.com/repos/$repo/issues?state=all/ -u "$token" --data "{\"title\":\"$title\", \"body\":\"$body\"}"
