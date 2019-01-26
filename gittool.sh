@@ -30,6 +30,13 @@ checkRepo()
     fi
     repo=$(echo $base | cut -d':' -f 2 | cut -d'.' -f 1)
 }
+createPull()
+{   
+    baseBranch=$1
+    title=$2
+    currentBranch=$(git branch | grep \* | cut -d ' ' -f2)
+    curl -X POST https://api.github.com/repos/$repo/pulls/ -d "{\"tittle\":\"$title\", \"base\":\"$baseBranch\", \"head\":\"$currentBranch\"}"
+}
 content="(This content is created via Gittool) \n"
 while [ "$1" != "" ]; do
     case $1 in
@@ -127,6 +134,7 @@ while [ "$1" != "" ]; do
         -v  | --version )       echo gittool v1.0.1 https://github.com/thanhnguyennguyen/lazy/blob/master/gittool.sh
                                 exit
                                 ;;
+        -p  | -- pull )         createPull $1 $2
     esac
     shift
 done
