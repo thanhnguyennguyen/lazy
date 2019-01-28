@@ -48,10 +48,9 @@ createPull()
     pullRepo=$repo
     if [ "$hasUpstream" != "" ]
     then
-        baseBranch="upstream/"
         pullRepo=$(echo $base | cut -d':' -f 2 | cut -d'.' -f 1)
     fi
-    baseBranch="$baseBranch$1"
+    baseBranch=$1
     title="$2"
     body="$content$3"
     currentUser=$(echo $base | cut -d':' -f 2 | cut -d'/' -f 1)
