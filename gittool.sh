@@ -44,7 +44,12 @@ checkRepo()
 }
 createPull()
 {   
-    baseBranch=$1
+    hasUpstream=$(git config --get remote.upstream.url)
+    if [ "$hasUpstream" != "" ]
+    then
+        baseBranch="upstream/"
+    fi
+    baseBranch="$baseBranch$1"
     title="$2"
     body="$content$3"
     currentUser=$(echo $base | cut -d':' -f 2 | cut -d'/' -f 1)
