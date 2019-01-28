@@ -24,7 +24,7 @@ usage()
           - gittool -v  ( --version ) : print version
     "
 }
-if [ "$1" == "" ]
+if [ "$1" = "" ]
 then
     usage
     exit
