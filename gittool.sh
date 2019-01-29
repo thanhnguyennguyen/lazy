@@ -50,7 +50,8 @@ createPull()
     pullRepo=$repo
     if [ "$hasUpstream" != "" ]
     then
-        pullRepo=$(echo $base | cut -d':' -f 2 | cut -d'.' -f 1)
+        upstream=$(git config --get remote.upstream.url)
+        pullRepo=$(echo $upstream | cut -d':' -f 2 | cut -d'.' -f 1)
     fi
     baseBranch=$1
     title="$2"
