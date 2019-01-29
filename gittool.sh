@@ -46,18 +46,12 @@ checkRepo()
 }
 createPull()
 {   
-    hasUpstream=$(git config --get remote.upstream.url)
-    pullRepo=$repo
-    if [ "$hasUpstream" != "" ]
-    then
-        pullRepo=$(echo $base | cut -d':' -f 2 | cut -d'.' -f 1)
-    fi
     baseBranch=$1
     title="$2"
     body="$content$3"
     currentUser=$(echo $base | cut -d':' -f 2 | cut -d'/' -f 1)
     currentBranch=$(git branch | grep \* | cut -d ' ' -f2)
-    response=$(curl -X POST https://api.github.com/repos/$pullRepo/pulls -u "$token" -d "{\"title\":\"$title\", \"base\":\"$baseBranch\", \"head\":\"$currentBranch\", \"body\": \"$body\"}" | jq -r '.number')
+    response=$(curl -X POST https://api.github.com/repos/$repo/pulls -u "$token" -d "{\"title\":\"$title\", \"base\":\"$baseBranch\", \"head\":\"$currentBranch\", \"body\": \"$body\"}" | jq -r '.number')
     $0 -a $response $currentUser
     $0 -l $response awaiting_review
 }
