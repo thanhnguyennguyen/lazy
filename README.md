@@ -34,6 +34,3 @@
       - gittool -v  ( --version ) : print version
 
 ```
-
- 
-
