@@ -5,3 +5,5 @@ code &
 teamviewer &
 slack &
 skype &
+goland & 
+

@@ -73,4 +73,6 @@ sleep 3s
 gnome-terminal --geometry=150x50 \
 --tab  --title="Node20" -e 'bash -c "cd ~/local_tomo/node20 &&  ./clean.sh && ./start.sh ;exec bash" ' 
 
+sleep 3s
+gnome-terminal --geometry=150x50 \
 --tab  --title="Open lazy tool" -e 'bash -c  "cd ~/git/lazy && ;exec bash"'
