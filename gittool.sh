@@ -51,7 +51,7 @@ createPull()
 {   
     pullRepo=$(echo $base | cut -d':' -f 2 | cut -d'.' -f 1)
     upstream=$(git config --get remote.upstream.url)
-    if [ "$upstream" != "" && "$4" != "origin"]
+    if [[ ("$upstream" != "") && ("$4" != "origin") ]]
     then
         pullRepo=$(echo $upstream | cut -d':' -f 2 | cut -d'.' -f 1)
     fi
