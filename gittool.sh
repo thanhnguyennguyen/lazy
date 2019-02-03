@@ -8,7 +8,10 @@ usage()
           - gittool -b  ( --base ) [git repo url] : set repo url
           - gittool -c  ( --comment ) [issue/pull request number] [content]: comment on an issue/pull request
           - gittool -cl ( --close-issue ) [issue/pull request number] : close an issue/pull request
-          - gittool -d  ( --done ) [Your commit message] : automatically commit your code and push to remote github repo (Remember to add stages in advance)
+          - gittool -d  ( --done ) [Your commit message] [origin/upstream]: automatically commit your code and push to remote github repo (Remember to add stages in advance)
+                                                        - upstream: by default, create new branch in origin and pull request to upstream repository
+                                                        - origin: create PR to origin. don't touch to upstream
+                                                        if your repo is not a fork repo, let's leave it empty by default
           - gittool -h  ( --help ) : show helps
           - gittool -i  ( --issue ) [title] [content]: create new issue
           - gittool -l  ( --label ) [issue/pull request number] [label name] : label an issue/ pull request
@@ -46,12 +49,18 @@ checkRepo()
 }
 createPull()
 {   
+    pullRepo=$(echo $base | cut -d':' -f 2 | cut -d'.' -f 1)
+    upstream=$(git config --get remote.upstream.url)
+    if [[ ("$upstream" != "") && ("$4" != "origin") ]]
+    then
+        pullRepo=$(echo $upstream | cut -d':' -f 2 | cut -d'.' -f 1)
+    fi
     baseBranch=$1
     title="$2"
     body="$content$3"
     currentUser=$(echo $base | cut -d':' -f 2 | cut -d'/' -f 1)
     currentBranch=$(git branch | grep \* | cut -d ' ' -f2)
-    response=$(curl -X POST https://api.github.com/repos/$repo/pulls -u "$token" -d "{\"title\":\"$title\", \"base\":\"$baseBranch\", \"head\":\"$currentBranch\", \"body\": \"$body\"}" | jq -r '.number')
+    response=$(curl -X POST https://api.github.com/repos/$pullRepo/pulls -u "$token" -d "{\"title\":\"$title\", \"base\":\"$baseBranch\", \"head\":\"$currentUser:$currentBranch\", \"body\": \"$body\"}" | jq -r '.number')
     $0 -a $response $currentUser
     $0 -l $response awaiting_review
 }
@@ -67,7 +76,7 @@ while [ "$1" != "" ]; do
                                 then
                                     git commit -m "$commitMessage"
                                     git push --set-upstream origin $(git branch | grep \* | cut -d ' ' -f2)
-                                    createPull master "$commitMessage" "$commitMessage"
+                                    createPull master "$commitMessage" "$commitMessage" $3
                                     exit
                                 fi;;
         -r  | --review )        checkRepo
