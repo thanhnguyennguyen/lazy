@@ -165,10 +165,18 @@ while [ "$1" != "" ]; do
                                 exit
                                 ;;
         -op | --open-pullrequests ) checkRepo
-                                response=$(curl -X GET https://api.github.com/repos/$repo/pulls -u "$token" | jq -r ".[] | .title, .html_url ")
-                                for i in "${response}"
-                                do
-                                    echo "$i\n"
+                                curl -X GET https://api.github.com/repos/$repo/pulls -u "$token" | jq -r ".[] | .title" > tempTitles.txt
+                                curl -X GET https://api.github.com/repos/$repo/pulls -u "$token" | jq -r ".[] | .html_url" > tempUrls.txt
+                                curl -X GET https://api.github.com/repos/$repo/pulls -u "$token" | jq -r ".[] | .assignee.login" > tempAssignee.txt
+                                titles=($(cat  tempTitles.txt | tr " " "_" | tr "\n" " "))
+                                urls=($(cat  tempUrls.txt | tr " " "_" | tr "\n" " "))
+                                assignee=($(cat  tempAssignee.txt | tr " " "_" | tr "\n" " "))
+                                currentUser=$(curl -X GET https://api.github.com/user -u "$token" | jq -r ".login")
+                                for ((i = 0; i < ${#titles[@]}; ++i)); do
+                                    if [ "${assignee[i]}" == *"$currentUser"* ]
+                                    then
+                                        echo "$i: ${titles[$i]} ${urls[$i]} ${assignee[i]}"
+                                    fi
                                 done
                                 exit
                                 ;;
