@@ -176,13 +176,16 @@ while [ "$1" != "" ]; do
                                 curl -X GET https://api.github.com/repos/$repo/issues -u "$token" | jq -r ".[] | .title" > tempTitles.txt
                                 curl -X GET https://api.github.com/repos/$repo/issues -u "$token" | jq -r ".[] | .html_url" > tempUrls.txt
                                 curl -X GET https://api.github.com/repos/$repo/issues -u "$token" | jq -r ".[] | .pull_request.html_url" > tempPulls.txt
+                                curl -X GET https://api.github.com/repos/$repo/issues -u "$token" | jq -r ".[] | .assignee.login" > tempAssignee.txt
                                 titles=($(cat  tempTitles.txt | tr " " "_" | tr "\n" " "))
                                 urls=($(cat  tempUrls.txt | tr " " "_" | tr "\n" " "))
                                 pulls=($(cat  tempPulls.txt | tr " " "_" | tr "\n" " "))
+                                assignee=($(cat  tempAssignee.txt | tr " " "_" | tr "\n" " "))
+                                rm tempTitles.txt tempUrls.txt tempPulls.txt tempAssignee.txt
                                 for ((i = 0; i < ${#titles[@]}; ++i)); do
                                     if [ "${pulls[i]}" = "null" ]
                                     then
-                                        echo "$i: ${titles[$i]} ${urls[$i]}"
+                                        echo "$i: ${titles[$i]} ${urls[$i]} ${assignee[i]}"
                                     fi
                                 done
                                 exit
