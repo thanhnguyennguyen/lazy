@@ -171,33 +171,45 @@ while [ "$1" != "" ]; do
                                 titles=($(cat  tempTitles.txt | tr " " "_" | tr "\n" " "))
                                 urls=($(cat  tempUrls.txt | tr " " "_" | tr "\n" " "))
                                 assignee=($(cat  tempAssignee.txt | tr " " "_" | tr "\n" " "))
-                                rm tempTitles.txt tempUrls.txt tempPulls.txt tempAssignee.txt
+                                rm tempTitles.txt tempUrls.txt tempAssignee.txt
                                 currentUser=$(curl -X GET https://api.github.com/user -u "$token" | jq -r ".login")
+                                num=0
                                 for ((i = 0; i < ${#titles[@]}; ++i)); do
                                     if [[ "${assignee[i]}" == *"$currentUser"* ]]
                                     then
                                         echo "$i: ${titles[$i]} ${urls[$i]} ${assignee[i]}"
+                                        num=$num+1
                                     fi
                                 done
+                                if [ $num = 0 ]
+                                then
+                                    echo YOU HAVE NO OPENING PULL REQUEST
+                                fi
                                 exit
                                 ;;
         -mr | --my-review )     checkRepo
                                 curl -X GET https://api.github.com/repos/$repo/pulls -u "$token" | jq -r ".[] | .title" > tempTitles.txt
                                 curl -X GET https://api.github.com/repos/$repo/pulls -u "$token" | jq -r ".[] | .html_url" > tempUrls.txt
-                                curl -X GET https://api.github.com/repos/$repo/pulls -u "$token" | jq -r ".[] | .requested_reviewers.login" > tempReviewer.txt
+                                curl -X GET https://api.github.com/repos/$repo/pulls -u "$token" | jq -r ".[] | .requested_reviewers[].login" > tempReviewer.txt
                                 curl -X GET https://api.github.com/repos/$repo/pulls -u "$token" | jq -r ".[] | .assignee.login" > tempAssignee.txt
                                 titles=($(cat  tempTitles.txt | tr " " "_" | tr "\n" " "))
                                 urls=($(cat  tempUrls.txt | tr " " "_" | tr "\n" " "))
                                 reviewers=($(cat  tempReviewer.txt | tr " " "_" | tr "\n" " "))
                                 assignee=($(cat  tempAssignee.txt | tr " " "_" | tr "\n" " "))
-                                rm tempTitles.txt tempUrls.txt tempPulls.txt tempAssignee.txt tempReviewer.txt
+                                rm tempTitles.txt tempUrls.txt tempAssignee.txt tempReviewer.txt
                                 currentUser=$(curl -X GET https://api.github.com/user -u "$token" | jq -r ".login")
+                                num=0
                                 for ((i = 0; i < ${#titles[@]}; ++i)); do
                                     if [[ "${reviewers[i]}" == *"$currentUser"* ]]
                                     then
                                         echo "$i: ${titles[$i]} ${urls[$i]} ${assignee[i]}"
+                                        num=$num+1
                                     fi
                                 done
+                                if [ $num = 0 ]
+                                then
+                                    echo NOTHING TO REVIEW
+                                fi
                                 exit
                                 ;;
         -op | --open-pullrequests ) checkRepo
@@ -207,7 +219,11 @@ while [ "$1" != "" ]; do
                                 titles=($(cat  tempTitles.txt | tr " " "_" | tr "\n" " "))
                                 urls=($(cat  tempUrls.txt | tr " " "_" | tr "\n" " "))
                                 assignee=($(cat  tempAssignee.txt | tr " " "_" | tr "\n" " "))
-                                rm tempTitles.txt tempUrls.txt tempPulls.txt tempAssignee.txt
+                                rm tempTitles.txt tempUrls.txt tempAssignee.txt
+                                if [ ${#titles[@]} = 0 ]
+                                then
+                                    echo NO OPENING PULL REQUEST IN THIS REPO
+                                fi
                                 for ((i = 0; i < ${#titles[@]}; ++i)); do
                                     echo "$i: ${titles[$i]} ${urls[$i]} ${assignee[i]}"
                                 done
