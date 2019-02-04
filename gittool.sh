@@ -175,7 +175,7 @@ while [ "$1" != "" ]; do
         -oi | --open-issues ) checkRepo
                                 curl -X GET https://api.github.com/repos/$repo/issues -u "$token" | jq -r ".[] | .title" > tempTitles.txt
                                 curl -X GET https://api.github.com/repos/$repo/issues -u "$token" | jq -r ".[] | .html_url" > tempUrls.txt
-                                curl -X GET https://api.github.com/repos/$repo/issues -u "$token" | jq -r ".[] | .pull_request" > tempPulls.txt
+                                curl -X GET https://api.github.com/repos/$repo/issues -u "$token" | jq -r ".[] | .pull_request.html_url" > tempPulls.txt
                                 titles=($(cat  tempTitles.txt | tr " " "_" | tr "\n" " "))
                                 urls=($(cat  tempUrls.txt | tr " " "_" | tr "\n" " "))
                                 pulls=($(cat  tempPulls.txt | tr " " "_" | tr "\n" " "))
