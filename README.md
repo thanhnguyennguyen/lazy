@@ -8,10 +8,10 @@
     - Download:
     ` curl -L https://raw.githubusercontent.com/thanhnguyennguyen/lazy/master/gittool.sh -o ~/gittool.sh
     `
-     - Prerequisite: 
-          -  `alias gittool="~/gittool.sh"`
-          - update config file ~/git/config.txt with format your_git_username:yourtoken (generate your token here https://github.com/settings/tokens/new)
-      - Usage: 
+    - Setup     
+         -  `alias gittool="~/gittool.sh"`
+         - update config file ~/git/config.txt with format your_git_username:yourtoken (generate your token here https://github.com/settings/tokens/new)
+     - Usage: 
       ```
       - gittool -a  ( --assign ) [issue/pull request number] [assignee]: assign an issue/pull request to an assignee
       - gittool -ai ( --assigned-issues) : get list of open issues assigned to me
