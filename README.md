@@ -5,8 +5,11 @@
  - start_mac.sh: add this script to startup to automatically launch necessary applications when you start your Mac
  - start_ubuntu: add this script to startup to automatically launch necessary applications when you start your PC
  - gittool.sh:
+    - Download:
+    ``` curl -L https://raw.githubusercontent.com/thanhnguyennguyen/lazy/master/gittool.sh -o ~/gittool.sh
+    ```
      - Prerequisite: 
-          -  `alias gittool="path/to/gittool.sh"`
+          -  `alias gittool="~/gittool.sh"`
           - update config file ~/git/config.txt with format your_git_username:yourtoken (generate your token here https://github.com/settings/tokens/new)
       - Usage: 
       ```
