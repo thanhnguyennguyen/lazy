@@ -171,9 +171,10 @@ while [ "$1" != "" ]; do
                                 titles=($(cat  tempTitles.txt | tr " " "_" | tr "\n" " "))
                                 urls=($(cat  tempUrls.txt | tr " " "_" | tr "\n" " "))
                                 assignee=($(cat  tempAssignee.txt | tr " " "_" | tr "\n" " "))
+                                rm tempTitles.txt tempUrls.txt tempPulls.txt tempAssignee.txt
                                 currentUser=$(curl -X GET https://api.github.com/user -u "$token" | jq -r ".login")
                                 for ((i = 0; i < ${#titles[@]}; ++i)); do
-                                    if [ "${assignee[i]}" == *"$currentUser"* ]
+                                    if [[ "${assignee[i]}" == *"$currentUser"* ]]
                                     then
                                         echo "$i: ${titles[$i]} ${urls[$i]} ${assignee[i]}"
                                     fi
