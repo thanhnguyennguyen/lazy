@@ -26,6 +26,7 @@
       - gittool -i  ( --issue ) [title] [content]: create new issue
       - gittool -l  ( --label ) [issue/pull request number] [label name] : label an issue/ pull request
       - gittool -m  ( --merge) [pull request number]: merge a pull request
+      - gittool -mop  ( --my-open-pullrequests) : list my opening pull requests in current repo
       - gittool -oi ( --open-issues) : get list of open issues of current repository
       - gittool -op ( --open-pullrequests): get list of open pull request
       - gittool -p  ( --pull ) [base branch] [title] [content (optional)]
