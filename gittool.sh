@@ -164,7 +164,7 @@ while [ "$1" != "" ]; do
                                 curl -X POST https://api.github.com/repos/$repo/pulls/$pr/requested_reviewers -u "$token" -d "{\"reviewers\":[\"$reviewer\"]}"
                                 exit
                                 ;;
-        -op | --open-pullrequests ) checkRepo
+        -mop | --my-open-pullrequests ) checkRepo
                                 curl -X GET https://api.github.com/repos/$repo/pulls -u "$token" | jq -r ".[] | .title" > tempTitles.txt
                                 curl -X GET https://api.github.com/repos/$repo/pulls -u "$token" | jq -r ".[] | .html_url" > tempUrls.txt
                                 curl -X GET https://api.github.com/repos/$repo/pulls -u "$token" | jq -r ".[] | .assignee.login" > tempAssignee.txt
@@ -178,6 +178,38 @@ while [ "$1" != "" ]; do
                                     then
                                         echo "$i: ${titles[$i]} ${urls[$i]} ${assignee[i]}"
                                     fi
+                                done
+                                exit
+                                ;;
+        -mr | --my-review )     checkRepo
+                                curl -X GET https://api.github.com/repos/$repo/pulls -u "$token" | jq -r ".[] | .title" > tempTitles.txt
+                                curl -X GET https://api.github.com/repos/$repo/pulls -u "$token" | jq -r ".[] | .html_url" > tempUrls.txt
+                                curl -X GET https://api.github.com/repos/$repo/pulls -u "$token" | jq -r ".[] | .requested_reviewers.login" > tempReviewer.txt
+                                curl -X GET https://api.github.com/repos/$repo/pulls -u "$token" | jq -r ".[] | .assignee.login" > tempAssignee.txt
+                                titles=($(cat  tempTitles.txt | tr " " "_" | tr "\n" " "))
+                                urls=($(cat  tempUrls.txt | tr " " "_" | tr "\n" " "))
+                                reviewers=($(cat  tempReviewer.txt | tr " " "_" | tr "\n" " "))
+                                assignee=($(cat  tempAssignee.txt | tr " " "_" | tr "\n" " "))
+                                rm tempTitles.txt tempUrls.txt tempPulls.txt tempAssignee.txt tempReviewer.txt
+                                currentUser=$(curl -X GET https://api.github.com/user -u "$token" | jq -r ".login")
+                                for ((i = 0; i < ${#titles[@]}; ++i)); do
+                                    if [[ "${reviewers[i]}" == *"$currentUser"* ]]
+                                    then
+                                        echo "$i: ${titles[$i]} ${urls[$i]} ${assignee[i]}"
+                                    fi
+                                done
+                                exit
+                                ;;
+        -op | --open-pullrequests ) checkRepo
+                                curl -X GET https://api.github.com/repos/$repo/pulls -u "$token" | jq -r ".[] | .title" > tempTitles.txt
+                                curl -X GET https://api.github.com/repos/$repo/pulls -u "$token" | jq -r ".[] | .html_url" > tempUrls.txt
+                                curl -X GET https://api.github.com/repos/$repo/pulls -u "$token" | jq -r ".[] | .assignee.login" > tempAssignee.txt
+                                titles=($(cat  tempTitles.txt | tr " " "_" | tr "\n" " "))
+                                urls=($(cat  tempUrls.txt | tr " " "_" | tr "\n" " "))
+                                assignee=($(cat  tempAssignee.txt | tr " " "_" | tr "\n" " "))
+                                rm tempTitles.txt tempUrls.txt tempPulls.txt tempAssignee.txt
+                                for ((i = 0; i < ${#titles[@]}; ++i)); do
+                                    echo "$i: ${titles[$i]} ${urls[$i]} ${assignee[i]}"
                                 done
                                 exit
                                 ;;
