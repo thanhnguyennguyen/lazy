@@ -243,16 +243,18 @@ while [ "$1" != "" ]; do
                                 pulls=($(cat  tempPulls.txt | tr " " "_" | tr "\n" " "))
                                 assignee=($(cat  tempAssignee.txt | tr " " "_" | tr "\n" " "))
                                 rm tempTitles.txt tempUrls.txt tempPulls.txt tempAssignee.txt
-                                if [ ${#titles[@]} = 0 ]
-                                then
-                                    echo NO OPENING ISSUE IN THIS REPO
-                                fi
+                                num=0
                                 for ((i = 0; i < ${#titles[@]}; ++i)); do
                                     if [ "${pulls[i]}" = "null" ]
                                     then
                                         echo "$i: ${titles[$i]} ${urls[$i]} ${assignee[i]}"
+                                        num=$num+1
                                     fi
                                 done
+                                if [ $num = 0 ]
+                                then
+                                    echo NO OPENING ISSUE IN THIS REPO
+                                fi
                                 exit
                                 ;;
         -ai | --assigned-issues ) response=$(curl -X GET https://api.github.com/user/issues -u "$token" | jq -r ".[] | .title, .html_url ")
