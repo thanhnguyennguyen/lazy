@@ -1,6 +1,6 @@
 # Raise issues
 - Describe your problem
-- Solution (if you have)
+- Solutions (if you have)
 # Contribute to our source code
 - Fork this repository to your account
 - Check out latest master branch
