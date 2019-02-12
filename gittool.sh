@@ -100,7 +100,7 @@ while [ "$1" != "" ]; do
                                 #  submit a comment
                                 reviewId=$(curl -s -X POST https://api.github.com/repos/$repo/pulls/$pullNumber/reviews -u "$token" | jq -r '.id')
                                 echo https://api.github.com/repos/$repo/pulls/$pullNumber/reviews/$reviewId/events/ 
-                                curl -X POST https://api.github.com/repos/$repo/pulls/$pullNumber/reviews/$reviewId/events -u "$token" --data "{\"body\":\"$content\", \"event\":\"APPROVE\"}"
+                                curl -s -X POST https://api.github.com/repos/$repo/pulls/$pullNumber/reviews/$reviewId/events -u "$token" --data "{\"body\":\"$content\", \"event\":\"APPROVE\"}"
                                 exit;;
         -rp  | --reject-pull )  checkRepo
                                 pullNumber=$2
@@ -108,41 +108,41 @@ while [ "$1" != "" ]; do
                                 #  submit a comment
                                 reviewId=$(curl -s -X POST https://api.github.com/repos/$repo/pulls/$pullNumber/reviews -u "$token" | jq -r '.id')
                                 echo https://api.github.com/repos/$repo/pulls/$pullNumber/reviews/$reviewId/events/ 
-                                curl -X POST https://api.github.com/repos/$repo/pulls/$pullNumber/reviews/$reviewId/events -u "$token" --data "{\"body\":\"$content\", \"event\":\"REQUEST_CHANGES\"}"
+                                curl -s -X POST https://api.github.com/repos/$repo/pulls/$pullNumber/reviews/$reviewId/events -u "$token" --data "{\"body\":\"$content\", \"event\":\"REQUEST_CHANGES\"}"
                                 exit;;
         -i  | --issue )    checkRepo
                                 title=$2
                                 body=$content$3
-                                curl -X POST https://api.github.com/repos/$repo/issues?state=all/ -u "$token" --data "{\"title\":\"$title\", \"body\":\"$body\"}"
+                                curl -s -X POST https://api.github.com/repos/$repo/issues?state=all/ -u "$token" --data "{\"title\":\"$title\", \"body\":\"$body\"}"
                                 exit;;
         -c  | --comment )       checkRepo
                                 number=$2
                                 content=$content$3
                                 #  submit a comment
-                                curl -X POST https://api.github.com/repos/$repo/issues/$number/comments?state=all/ -u "$token" -d "{\"body\":\"$content\"}"
+                                curl -s -X POST https://api.github.com/repos/$repo/issues/$number/comments?state=all/ -u "$token" -d "{\"body\":\"$content\"}"
                                 exit;;
         -a  | --assign ) number=$2
                                 checkRepo
                                 assignee=$3
-                                curl -X POST https://api.github.com/repos/$repo/issues/$number/assignees?state=all/ -u "$token" -d "{\"assignees\":\"$assignee\"}"
+                                curl -s -X POST https://api.github.com/repos/$repo/issues/$number/assignees?state=all/ -u "$token" -d "{\"assignees\":\"$assignee\"}"
                                 exit;;
         -l  | --label )         checkRepo
                                 number=$2
                                 label=$3
-                                curl -X POST https://api.github.com/repos/$repo/issues/$number/labels?state=all/ -u "$token" -d "{\"labels\":[\"$label\"]}"
+                                curl -s -X POST https://api.github.com/repos/$repo/issues/$number/labels?state=all/ -u "$token" -d "{\"labels\":[\"$label\"]}"
                                 exit;;
         -rl  | --remove-label ) checkRepo
                                 number=$2
                                 label=$3
-                                curl -X DELETE https://api.github.com/repos/$repo/issues/$number/labels?state=all/$label -u "$token"
+                                curl -s -X DELETE https://api.github.com/repos/$repo/issues/$number/labels?state=all/$label -u "$token"
                                 exit;;
         -cl  | --close       )  checkRepo
                                 number=$2
-                                curl -X POST https://api.github.com/repos/$repo/issues/$number?state=all -u "$token" -d "{\"state\":\"closed\"}"
+                                curl -s -X POST https://api.github.com/repos/$repo/issues/$number?state=all -u "$token" -d "{\"state\":\"closed\"}"
                                 exit;;
         -m  | --merge       )   checkRepo
                                 number=$2
-                                curl -X PUT https://api.github.com/repos/$repo/pulls/$number/merge -u "$token"
+                                curl -s -X PUT https://api.github.com/repos/$repo/pulls/$number/merge -u "$token"
                                 $0 -rl $number "awaiting_review"
                                 $0 -l $number "done"
                                 exit;;
@@ -165,13 +165,13 @@ while [ "$1" != "" ]; do
         -rr | --review-request ) checkRepo
                                 pr=$2 
                                 reviewer=$3
-                                curl -X POST https://api.github.com/repos/$repo/pulls/$pr/requested_reviewers -u "$token" -d "{\"reviewers\":[\"$reviewer\"]}"
+                                curl -s -X POST https://api.github.com/repos/$repo/pulls/$pr/requested_reviewers -u "$token" -d "{\"reviewers\":[\"$reviewer\"]}"
                                 exit
                                 ;;
         -mop | --my-open-pullrequests ) checkRepo
-                                curl -X GET https://api.github.com/repos/$repo/pulls -u "$token" | jq -r ".[] | .title" > tempTitles.txt
-                                curl -X GET https://api.github.com/repos/$repo/pulls -u "$token" | jq -r ".[] | .html_url" > tempUrls.txt
-                                curl -X GET https://api.github.com/repos/$repo/pulls -u "$token" | jq -r ".[] | .assignee.login" > tempAssignee.txt
+                                curl -s -X GET https://api.github.com/repos/$repo/pulls -u "$token" | jq -r ".[] | .title" > tempTitles.txt
+                                curl -s -X GET https://api.github.com/repos/$repo/pulls -u "$token" | jq -r ".[] | .html_url" > tempUrls.txt
+                                curl -s -X GET https://api.github.com/repos/$repo/pulls -u "$token" | jq -r ".[] | .assignee.login" > tempAssignee.txt
                                 titles=($(cat  tempTitles.txt | tr " " "_" | tr "\n" " "))
                                 urls=($(cat  tempUrls.txt | tr " " "_" | tr "\n" " "))
                                 assignee=($(cat  tempAssignee.txt | tr " " "_" | tr "\n" " "))
@@ -192,10 +192,10 @@ while [ "$1" != "" ]; do
                                 exit
                                 ;;
         -mr | --my-review )     checkRepo
-                                curl -X GET https://api.github.com/repos/$repo/pulls -u "$token" | jq -r ".[] | .title" > tempTitles.txt
-                                curl -X GET https://api.github.com/repos/$repo/pulls -u "$token" | jq -r ".[] | .html_url" > tempUrls.txt
-                                curl -X GET https://api.github.com/repos/$repo/pulls -u "$token" | jq -r ".[] | .requested_reviewers[].login" > tempReviewer.txt
-                                curl -X GET https://api.github.com/repos/$repo/pulls -u "$token" | jq -r ".[] | .assignee.login" > tempAssignee.txt
+                                curl -s -X GET https://api.github.com/repos/$repo/pulls -u "$token" | jq -r ".[] | .title" > tempTitles.txt
+                                curl -s -X GET https://api.github.com/repos/$repo/pulls -u "$token" | jq -r ".[] | .html_url" > tempUrls.txt
+                                curl -s -X GET https://api.github.com/repos/$repo/pulls -u "$token" | jq -r ".[] | .requested_reviewers[].login" > tempReviewer.txt
+                                curl -s -X GET https://api.github.com/repos/$repo/pulls -u "$token" | jq -r ".[] | .assignee.login" > tempAssignee.txt
                                 titles=($(cat  tempTitles.txt | tr " " "_" | tr "\n" " "))
                                 urls=($(cat  tempUrls.txt | tr " " "_" | tr "\n" " "))
                                 reviewers=($(cat  tempReviewer.txt | tr " " "_" | tr "\n" " "))
@@ -217,9 +217,9 @@ while [ "$1" != "" ]; do
                                 exit
                                 ;;
         -op | --open-pullrequests ) checkRepo
-                                curl -X GET https://api.github.com/repos/$repo/pulls -u "$token" | jq -r ".[] | .title" > tempTitles.txt
-                                curl -X GET https://api.github.com/repos/$repo/pulls -u "$token" | jq -r ".[] | .html_url" > tempUrls.txt
-                                curl -X GET https://api.github.com/repos/$repo/pulls -u "$token" | jq -r ".[] | .assignee.login" > tempAssignee.txt
+                                curl -s -X GET https://api.github.com/repos/$repo/pulls -u "$token" | jq -r ".[] | .title" > tempTitles.txt
+                                curl -s -X GET https://api.github.com/repos/$repo/pulls -u "$token" | jq -r ".[] | .html_url" > tempUrls.txt
+                                curl -s -X GET https://api.github.com/repos/$repo/pulls -u "$token" | jq -r ".[] | .assignee.login" > tempAssignee.txt
                                 titles=($(cat  tempTitles.txt | tr " " "_" | tr "\n" " "))
                                 urls=($(cat  tempUrls.txt | tr " " "_" | tr "\n" " "))
                                 assignee=($(cat  tempAssignee.txt | tr " " "_" | tr "\n" " "))
@@ -234,10 +234,10 @@ while [ "$1" != "" ]; do
                                 exit
                                 ;;
         -oi | --open-issues ) checkRepo
-                                curl -X GET https://api.github.com/repos/$repo/issues -u "$token" | jq -r ".[] | .title" > tempTitles.txt
-                                curl -X GET https://api.github.com/repos/$repo/issues -u "$token" | jq -r ".[] | .html_url" > tempUrls.txt
-                                curl -X GET https://api.github.com/repos/$repo/issues -u "$token" | jq -r ".[] | .pull_request.html_url" > tempPulls.txt
-                                curl -X GET https://api.github.com/repos/$repo/issues -u "$token" | jq -r ".[] | .assignee.login" > tempAssignee.txt
+                                curl -s -X GET https://api.github.com/repos/$repo/issues -u "$token" | jq -r ".[] | .title" > tempTitles.txt
+                                curl -s -X GET https://api.github.com/repos/$repo/issues -u "$token" | jq -r ".[] | .html_url" > tempUrls.txt
+                                curl -s -X GET https://api.github.com/repos/$repo/issues -u "$token" | jq -r ".[] | .pull_request.html_url" > tempPulls.txt
+                                curl -s -X GET https://api.github.com/repos/$repo/issues -u "$token" | jq -r ".[] | .assignee.login" > tempAssignee.txt
                                 titles=($(cat  tempTitles.txt | tr " " "_" | tr "\n" " "))
                                 urls=($(cat  tempUrls.txt | tr " " "_" | tr "\n" " "))
                                 pulls=($(cat  tempPulls.txt | tr " " "_" | tr "\n" " "))
@@ -271,7 +271,7 @@ while [ "$1" != "" ]; do
         -t | --tag )            checkRepo
                                 tagName=$2
                                 releaseName=$3
-                                curl -X POST https://api.github.com/repos/$repo/releases -u "$token" -d "{\"tag_name\": \"$tagName\", \"name\":\"$releaseName\"}"
+                                curl -s -X POST https://api.github.com/repos/$repo/releases -u "$token" -d "{\"tag_name\": \"$tagName\", \"name\":\"$releaseName\"}"
                                 exit
                                 ;;
         --releases )            checkRepo
