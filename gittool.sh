@@ -65,7 +65,7 @@ createPull()
     body="$content$3"
     currentUser=$(echo $base | cut -d':' -f 2 | cut -d'/' -f 1)
     currentBranch=$(git branch | grep \* | cut -d ' ' -f2)
-    response=$(curl -X POST https://api.github.com/repos/$pullRepo/pulls -u "$token" -d "{\"title\":\"$title\", \"base\":\"$baseBranch\", \"head\":\"$currentUser:$currentBranch\", \"body\": \"$body\"}" | jq -r '.number')
+    response=$(curl -s -X POST https://api.github.com/repos/$pullRepo/pulls -u "$token" -d "{\"title\":\"$title\", \"base\":\"$baseBranch\", \"head\":\"$currentUser:$currentBranch\", \"body\": \"$body\"}" | jq -r '.number')
     $0 -a $response $currentUser
     $0 -l $response awaiting_review
 }
@@ -90,7 +90,7 @@ while [ "$1" != "" ]; do
                                 if [ "$reviewNumber" != "" ]
                                 then
                                     # start review
-                                    response=$(curl -X POST https://api.github.com/repos/$repo/pulls/$reviewNumber/reviews -u "$token")
+                                    response=$(curl -s -X POST https://api.github.com/repos/$repo/pulls/$reviewNumber/reviews -u "$token")
                                     (xdg-open https://github.com/$repo/pull/$reviewNumber & )
                                     exit
                                 fi;;
@@ -176,7 +176,7 @@ while [ "$1" != "" ]; do
                                 urls=($(cat  tempUrls.txt | tr " " "_" | tr "\n" " "))
                                 assignee=($(cat  tempAssignee.txt | tr " " "_" | tr "\n" " "))
                                 rm tempTitles.txt tempUrls.txt tempAssignee.txt
-                                currentUser=$(curl -X GET https://api.github.com/user -u "$token" | jq -r ".login")
+                                currentUser=$(curl -s -X GET https://api.github.com/user -u "$token" | jq -r ".login")
                                 num=0
                                 for ((i = 0; i < ${#titles[@]}; ++i)); do
                                     if [[ "${assignee[i]}" == *"$currentUser"* ]]
@@ -201,7 +201,7 @@ while [ "$1" != "" ]; do
                                 reviewers=($(cat  tempReviewer.txt | tr " " "_" | tr "\n" " "))
                                 assignee=($(cat  tempAssignee.txt | tr " " "_" | tr "\n" " "))
                                 rm tempTitles.txt tempUrls.txt tempAssignee.txt tempReviewer.txt
-                                currentUser=$(curl -X GET https://api.github.com/user -u "$token" | jq -r ".login")
+                                currentUser=$(curl -s -X GET https://api.github.com/user -u "$token" | jq -r ".login")
                                 num=0
                                 for ((i = 0; i < ${#titles[@]}; ++i)); do
                                     if [[ "${reviewers[i]}" == *"$currentUser"* ]]
@@ -257,7 +257,7 @@ while [ "$1" != "" ]; do
                                 fi
                                 exit
                                 ;;
-        -ai | --assigned-issues ) response=$(curl -X GET https://api.github.com/user/issues -u "$token" | jq -r ".[] | .title, .html_url ")
+        -ai | --assigned-issues ) response=$(curl -s -X GET https://api.github.com/user/issues -u "$token" | jq -r ".[] | .title, .html_url ")
                                 if [ ${#response[@]} = 0 ]
                                 then
                                     echo NO ISSUE ASSIGNED TO YOU
@@ -275,7 +275,7 @@ while [ "$1" != "" ]; do
                                 exit
                                 ;;
         --releases )            checkRepo
-                                response=$(curl -X GET https://api.github.com/repos/$repo/releases -u "$token" | jq -r ".[] | .tag_name, .name, .html_url ")
+                                response=$(curl -s -X GET https://api.github.com/repos/$repo/releases -u "$token" | jq -r ".[] | .tag_name, .name, .html_url ")
                                 for i in "${response}"
                                 do
                                     echo "$i\n"
