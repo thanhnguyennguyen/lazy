@@ -155,7 +155,11 @@ while [ "$1" != "" ]; do
         -h  | --help )          usage
                                 exit
                                 ;;
-        -v  | --version )       echo gittool v1.0.1 https://github.com/thanhnguyennguyen/lazy/blob/master/gittool.sh
+        -v  | --version )       echo gittool 
+                                echo https://github.com/thanhnguyennguyen/lazy/blob/master/gittool.sh
+                                response=$(curl -s -X GET https://api.github.com/repos/thanhnguyennguyen/lazy/releases | jq -r ".[] | .tag_name ")
+                                releases=($response)
+                                echo Version ${releases[0]}
                                 exit
                                 ;;
         -p  | --pull )          checkRepo
