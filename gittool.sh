@@ -157,7 +157,7 @@ while [ "$1" != "" ]; do
                                 ;;
         -v  | --version )       echo gittool 
                                 echo https://github.com/thanhnguyennguyen/lazy/blob/master/gittool.sh
-                                curVer="1.0.3"
+                                curVer=$(cat lazy.ver)
                                 echo Version $curVer
                                 response=$(curl -s -X GET https://api.github.com/repos/thanhnguyennguyen/lazy/releases | jq -r ".[] | .tag_name ")
                                 releases=($response)
@@ -167,7 +167,7 @@ while [ "$1" != "" ]; do
                                 else
                                     echo Your tools are out of date. The latest release is ${releases[0]}
                                     echo "Please update using this command "
-                                    echo "curl -L https://raw.githubusercontent.com/thanhnguyennguyen/lazy/master/gittool.sh -o ~/gittool.sh" 
+                                    echo "curl -L https://raw.githubusercontent.com/thanhnguyennguyen/lazy/master/gittool.sh -o ~/gittool.sh && curl -L https://raw.githubusercontent.com/thanhnguyennguyen/lazy/master/ver.txt -o ~/lazy.ver" 
                                 fi
                                 exit
                                 ;;
