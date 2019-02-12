@@ -166,6 +166,8 @@ while [ "$1" != "" ]; do
                                     echo Your tools are up to date!
                                 else
                                     echo Your tools are out of date. The latest release is ${releases[0]}
+                                    echo "Please update using this command "
+                                    echo "curl -L https://raw.githubusercontent.com/thanhnguyennguyen/lazy/master/gittool.sh -o ~/gittool.sh" 
                                 fi
                                 exit
                                 ;;
