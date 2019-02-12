@@ -157,7 +157,7 @@ while [ "$1" != "" ]; do
                                 ;;
         -v  | --version )       echo gittool 
                                 echo https://github.com/thanhnguyennguyen/lazy/blob/master/gittool.sh
-                                curVer=1.0.2
+                                curVer="1.0.2"
                                 echo Version $curVer
                                 response=$(curl -s -X GET https://api.github.com/repos/thanhnguyennguyen/lazy/releases | jq -r ".[] | .tag_name ")
                                 releases=($response)
