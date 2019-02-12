@@ -157,9 +157,16 @@ while [ "$1" != "" ]; do
                                 ;;
         -v  | --version )       echo gittool 
                                 echo https://github.com/thanhnguyennguyen/lazy/blob/master/gittool.sh
+                                curVer=1.0.2
+                                echo Version $curVer
                                 response=$(curl -s -X GET https://api.github.com/repos/thanhnguyennguyen/lazy/releases | jq -r ".[] | .tag_name ")
                                 releases=($response)
-                                echo Version ${releases[0]}
+                                if [ ${releases[0]} = $curVer ]
+                                then
+                                    echo Your tools are up to date!
+                                else
+                                    echo Your tools are out of date. The latest release is ${releases[0]}
+                                fi
                                 exit
                                 ;;
         -p  | --pull )          checkRepo
