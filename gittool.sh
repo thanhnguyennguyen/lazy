@@ -157,7 +157,8 @@ while [ "$1" != "" ]; do
                                 ;;
         -v  | --version )       echo gittool 
                                 echo https://github.com/thanhnguyennguyen/lazy/blob/master/gittool.sh
-                                curVer=$(cat lazy.ver)
+                                DIR=$( dirname $0)
+                                curVer=$(cat $DIR/lazy.ver)
                                 echo Version $curVer
                                 response=$(curl -s -X GET https://api.github.com/repos/thanhnguyennguyen/lazy/releases | jq -r ".[] | .tag_name ")
                                 releases=($response)
