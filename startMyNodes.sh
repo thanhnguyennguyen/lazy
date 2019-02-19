@@ -1,10 +1,11 @@
 #!/bin/bash
 
+gnome-terminal --geometry=150x50 \
+--tab  --title="Bootnode" -e 'bash -c " cd ~/local_tomo/bootnode && tomo --nodekey boot.key -port 30301 ;exec bash " '
+sleep 5s
+
 if [ "$1" = "fresh" ]
 then
-    gnome-terminal --geometry=150x50 \
-    --tab  --title="Bootnode" -e 'bash -c " cd ~/local_tomo/bootnode && bootnode --nodekey=boot.key ;exec bash " '
-    sleep 5s
     gnome-terminal --geometry=150x50 \
     --tab  --title="Node1" -e 'bash -c " cd ~/local_tomo/node1 &&  ./clean.sh && ./start.sh ;exec bash " ' 
     sleep 3s
@@ -73,10 +74,6 @@ then
     # gnome-terminal --geometry=150x50 \
     # --tab  --title="Node19" -e 'bash -c "cd ~/local_tomo/node19 &&  ./clean.sh && ./start.sh ;exec bash" ' 
 else
-
-    gnome-terminal --geometry=150x50 \
-    --tab  --title="Bootnode" -e 'bash -c " cd ~/local_tomo/bootnode && bootnode --nodekey=boot.key ;exec bash " '
-    sleep 5s
     gnome-terminal --geometry=150x50 \
     --tab  --title="Node1" -e 'bash -c " cd ~/local_tomo/node1  && ./start.sh ;exec bash " ' 
     sleep 3s
