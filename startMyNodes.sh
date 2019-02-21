@@ -3,7 +3,7 @@
 gnome-terminal --geometry=150x50 \
 --tab  --title="Bootnode"   -- bash -c " cd ~/local_tomo/bootnode && bootnode  -nodekey boot.key  -v5   " 
 sleep 5s
-
+echo Starting...
 if [ "$1" = "fresh" ]
 then
     gnome-terminal --geometry=150x50 \
@@ -143,3 +143,5 @@ else
     # --tab  --title="Node19"   -- bash -c "cd ~/local_tomo/node19  && ./start.sh  "  
 
 fi
+
+echo DONE
