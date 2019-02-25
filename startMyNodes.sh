@@ -1,7 +1,7 @@
 #!/bin/bash
 
 gnome-terminal --geometry=150x50 \
---tab  --title="Bootnode"   -- bash -c " cd ~/local_tomo/bootnode && bootnode  -nodekey boot.key  -v5   " 
+--tab  --title="Bootnode"   -- bash -c " cd ~/local_tomo/bootnode && tomo --nodekey boot.key -port 30301   " 
 sleep 5s
 echo Starting...
 if [ "$1" = "fresh" ]
