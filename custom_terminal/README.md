@@ -11,3 +11,11 @@ TRAPALRM() {
 }
 
 ```
+
+#### Custom messages
+To add custom message, add the following lines to ~/.zshrc
+```bash
+rand=$(($RANDOM % ${#messages[@]}))
+selectedMessage=${messages[$rand]}
+PROMPT="$PROMPT $selectedMessage"
+```
