@@ -1,4 +1,5 @@
-# Clock
+# Customize your terminal to make your working space more interesting
+#### Clock in terminal
 To add clock and custom message to your terminal, please add this to your ~/.zshrc file 
 ```bash
 setopt PROMPT_SUBST
