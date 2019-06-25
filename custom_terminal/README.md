@@ -15,6 +15,8 @@ TRAPALRM() {
 #### Custom messages
 To add custom message, add the following lines to ~/.zshrc
 ```bash
+messages=("Hello there, Have a nice day!" "Never give up" "Enjoy music for a nice day" "Sleep on your passion" "Buy Bitcoin" "Buy TOMO" "How are you today ?" )
+
 rand=$(($RANDOM % ${#messages[@]}))
 selectedMessage=${messages[$rand]}
 PROMPT="$PROMPT $selectedMessage"
