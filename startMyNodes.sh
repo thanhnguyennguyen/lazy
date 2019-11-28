@@ -11,73 +11,39 @@ then
     echo "Node1 has been started"
     sleep 3s
     gnome-terminal --geometry=150x50 \
-    --tab  --title="Node2"   -- bash -c "cd ~/local_tomo/node2 &&  ./clean.sh && ./start.sh   "  
+    --tab  --title="Node2"   -- bash -c "cd ~/local_tomo/node2 &&  ./clean.sh && ./start.sh    "  
     echo "Node2 has been started"
     sleep 3s
     gnome-terminal --geometry=150x50 \
-    --tab  --title="Node3"   -- bash -c "cd ~/local_tomo/node3 &&  ./clean.sh && ./start.sh   "  
+    --tab  --title="Node3"   -- bash -c "cd ~/local_tomo/node3 &&  ./clean.sh && ./start.sh    "  
     echo "Node3 has been started"
     sleep 3s
     gnome-terminal --geometry=150x50 \
-    --tab  --title="Node4"   -- bash -c "cd ~/local_tomo/node4 &&  ./clean.sh && ./start.sh   "  
+    --tab  --title="Node4"   -- bash -c "cd ~/local_tomo/node4 &&  ./clean.sh && ./start.sh    "  
     echo "Node4 has been started"
     sleep 3s
     gnome-terminal --geometry=150x50 \
-    --tab  --title="Node5"   -- bash -c "cd ~/local_tomo/node5 &&  ./clean.sh && ./start.sh   "  
+    --tab  --title="Node5"   -- bash -c "cd ~/local_tomo/node5 &&  ./clean.sh && ./start.sh    "  
     echo "Node5 has been started"
-    # sleep 3s
-    # gnome-terminal --geometry=150x50 \
-    # --tab  --title="Node6"   -- bash -c "cd ~/local_tomo/node6 &&  ./clean.sh && ./start.sh  "  
-    # sleep 3s
-    # gnome-terminal --geometry=150x50 \
-    # --tab  --title="Node7"   -- bash -c "cd ~/local_tomo/node7 &&  ./clean.sh && ./start.sh  "  
-    # sleep 3s
-    # gnome-terminal --geometry=150x50 \
-    # --tab  --title="Node8"   -- bash -c "cd ~/local_tomo/node8 &&  ./clean.sh && ./start.sh  "  
-
-    # sleep 3s
-    # gnome-terminal --geometry=150x50 \
-    # --tab  --title="Node9"   -- bash -c "cd ~/local_tomo/node9 &&  ./clean.sh && ./start.sh  "  
-
-    # sleep 3s
-    # gnome-terminal --geometry=150x50 \
-    # --tab  --title="Node10"   -- bash -c "cd ~/local_tomo/node10 &&  ./clean.sh && ./start.sh  "  
-
-    # sleep 3s
-    # gnome-terminal --geometry=150x50 \
-    # --tab  --title="Node11"   -- bash -c "cd ~/local_tomo/node11 &&  ./clean.sh && ./start.sh  "  
-
-    # sleep 3s
-    # gnome-terminal --geometry=150x50 \
-    # --tab  --title="Node12"   -- bash -c "cd ~/local_tomo/node12 &&  ./clean.sh && ./start.sh  "  
-
-    # sleep 3s
-    # gnome-terminal --geometry=150x50 \
-    # --tab  --title="Node13"   -- bash -c "cd ~/local_tomo/node13 &&  ./clean.sh && ./start.sh  "  
-
-    # sleep 3s
-    # gnome-terminal --geometry=150x50 \
-    # --tab  --title="Node14"   -- bash -c "cd ~/local_tomo/node14 &&  ./clean.sh && ./start.sh  "  
-
-    # sleep 3s
-    # gnome-terminal --geometry=150x50 \
-    # --tab  --title="Node15"   -- bash -c "cd ~/local_tomo/node15 &&  ./clean.sh && ./start.sh  "  
-
-    # sleep 3s
-    # gnome-terminal --geometry=150x50 \
-    # --tab  --title="Node16"   -- bash -c "cd ~/local_tomo/node16 &&  ./clean.sh && ./start.sh  "  
-
-    # sleep 3s
-    # gnome-terminal --geometry=150x50 \
-    # --tab  --title="Node17"   -- bash -c "cd ~/local_tomo/node17 &&  ./clean.sh && ./start.sh  "  
-
-    # sleep 3s
-    # gnome-terminal --geometry=150x50 \
-    # --tab  --title="Node18"   -- bash -c "cd ~/local_tomo/node18 &&  ./clean.sh && ./start.sh  "  
-
-    # sleep 3s
-    # gnome-terminal --geometry=150x50 \
-    # --tab  --title="Node19"   -- bash -c "cd ~/local_tomo/node19 &&  ./clean.sh && ./start.sh  "  
+     sleep 3s
+     gnome-terminal --geometry=150x50 \
+     --tab  --title="MongoDB Full Node"   -- bash -c "cd ~/local_tomo/node6 &&  ./clean.sh && ./start.sh  "  
+       echo "MongoDB Full Node has been started"
+     sleep 3s
+    gnome-terminal --geometry=150x50 \
+    --tab  --title="Node7"   -- bash -c "cd ~/local_tomo/node7 &&  ./clean.sh && ./start.sh    "  
+    echo "Node7 has been started"
+     sleep 3s
+    gnome-terminal --geometry=150x50 \
+    --tab  --title="Node8"   -- bash -c "cd ~/local_tomo/node8 &&  ./clean.sh && ./start.sh    "  
+    echo "Node8 has been started"
+     sleep 3s
+    gnome-terminal --geometry=150x50 \
+    --tab  --title="Node9"   -- bash -c "cd ~/local_tomo/node9 &&  ./clean.sh && ./start.sh    "  
+    echo "Node9 has been started"
+#       gnome-terminal --geometry=150x50 \
+ #   --tab  --title="Node10"   -- bash -c "cd ~/local_tomo/node10 &&  ./clean.sh && ./start.sh    "
+  #  echo "Node10 has been started"
 else
     gnome-terminal --geometry=150x50 \
     --tab  --title="Node1"   -- bash -c " cd ~/local_tomo/node1  && ./start.sh   "  
@@ -98,60 +64,6 @@ else
     gnome-terminal --geometry=150x50 \
     --tab  --title="Node5"   -- bash -c "cd ~/local_tomo/node5  && ./start.sh   "  
     echo "Node5 has been started"
-    # sleep 3s
-    # gnome-terminal --geometry=150x50 \
-    # --tab  --title="Node6"   -- bash -c "cd ~/local_tomo/node6  && ./start.sh  "  
-    # sleep 3s
-    # gnome-terminal --geometry=150x50 \
-    # --tab  --title="Node7"   -- bash -c "cd ~/local_tomo/node7  && ./start.sh  "  
-    # sleep 3s
-    # gnome-terminal --geometry=150x50 \
-    # --tab  --title="Node8"   -- bash -c "cd ~/local_tomo/node8  && ./start.sh  "  
-
-    # sleep 3s
-    # gnome-terminal --geometry=150x50 \
-    # --tab  --title="Node9"   -- bash -c "cd ~/local_tomo/node9  && ./start.sh  "  
-
-    # sleep 3s
-    # gnome-terminal --geometry=150x50 \
-    # --tab  --title="Node10"   -- bash -c "cd ~/local_tomo/node10  && ./start.sh  "  
-
-    # sleep 3s
-    # gnome-terminal --geometry=150x50 \
-    # --tab  --title="Node11"   -- bash -c "cd ~/local_tomo/node11  && ./start.sh  "  
-
-    # sleep 3s
-    # gnome-terminal --geometry=150x50 \
-    # --tab  --title="Node12"   -- bash -c "cd ~/local_tomo/node12  && ./start.sh  "  
-
-    # sleep 3s
-    # gnome-terminal --geometry=150x50 \
-    # --tab  --title="Node13"   -- bash -c "cd ~/local_tomo/node13  && ./start.sh  "  
-
-    # sleep 3s
-    # gnome-terminal --geometry=150x50 \
-    # --tab  --title="Node14"   -- bash -c "cd ~/local_tomo/node14  && ./start.sh  "  
-
-    # sleep 3s
-    # gnome-terminal --geometry=150x50 \
-    # --tab  --title="Node15"   -- bash -c "cd ~/local_tomo/node15  && ./start.sh  "  
-
-    # sleep 3s
-    # gnome-terminal --geometry=150x50 \
-    # --tab  --title="Node16"   -- bash -c "cd ~/local_tomo/node16  && ./start.sh  "  
-
-    # sleep 3s
-    # gnome-terminal --geometry=150x50 \
-    # --tab  --title="Node17"   -- bash -c "cd ~/local_tomo/node17  && ./start.sh  "  
-
-    # sleep 3s
-    # gnome-terminal --geometry=150x50 \
-    # --tab  --title="Node18"   -- bash -c "cd ~/local_tomo/node18  && ./start.sh  "  
-
-    # sleep 3s
-    # gnome-terminal --geometry=150x50 \
-    # --tab  --title="Node19"   -- bash -c "cd ~/local_tomo/node19  && ./start.sh  "  
-
 fi
 
 echo DONE
