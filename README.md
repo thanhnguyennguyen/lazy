@@ -1,6 +1,5 @@
 # lazy tools
- I hate doing repeated and boring things. I'm okay to spend a lot of time to write some scripts to do it automatically by one Enter press
- It should be exactly done by my computer.
+ I hate doing repeated and boring things. I'm willing to spend a lot of time to write some scripts to do it automatically. Then, next time, we just need to press `Enter`, take a coffee cup and enjoy the expected results
  
  ## start_mac.sh
   add this script to startup to automatically launch necessary applications when you start your Mac
