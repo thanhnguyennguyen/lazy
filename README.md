@@ -2,16 +2,19 @@
  I hate doing repeated and boring things. I'm okay to spend a lot of time to write some scripts to do it automatically by one Enter press
  It should be exactly done by my computer.
  
- - start_mac.sh: add this script to startup to automatically launch necessary applications when you start your Mac
- - start_ubuntu: add this script to startup to automatically launch necessary applications when you start your PC
- - gittool.sh:
-    - Download:
+ ## start_mac.sh
+  add this script to startup to automatically launch necessary applications when you start your Mac
+ ## start_ubuntu.sh
+  add this script to startup to automatically launch necessary applications when you start your PC
+ ## gittool.sh:
+ 
+   - Download:
     ` curl -L https://raw.githubusercontent.com/thanhnguyennguyen/lazy/master/gittool.sh -o ~/gittool.sh
     `
-    - Setup     
+   - Setup     
          -  `alias gittool="~/gittool.sh"`
          - update config file ~/git/config.txt with format your_git_username:yourtoken (generate your token here https://github.com/settings/tokens/new)
-     - Usage: 
+   - Usage: 
       ```
       - gittool -a  ( --assign ) [issue/pull request number] [assignee]: assign an issue/pull request to an assignee
       - gittool -ai ( --assigned-issues) : get list of open issues assigned to me
