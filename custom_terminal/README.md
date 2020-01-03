@@ -1,6 +1,6 @@
 # Customize your terminal to make your working space more interesting
 #### Clock in terminal
-To add clock and custom message to your terminal, please add this to your ~/.zshrc file 
+To add clock and custom message to your terminal, please add this to your ~/.bashrc (~/.zshrc file if you use zsh)
 ```bash
 setopt PROMPT_SUBST
 PROMPT="$PROMPT %B%F{green}Hello there, Have a nice day! %B%F{yellow}[%D{%L:%M:%S}] %f%b"
