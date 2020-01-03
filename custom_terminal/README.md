@@ -11,6 +11,8 @@ TRAPALRM() {
 }
 
 ```
+![image](https://user-images.githubusercontent.com/17243442/71717905-32a09b80-2e4c-11ea-86a3-636ae5e91990.png)
+
 
 #### Custom messages
 To add custom message, add the following lines to ~/.zshrc
