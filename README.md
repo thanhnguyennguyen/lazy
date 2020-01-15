@@ -10,7 +10,13 @@
    - Download:
     ` curl -L https://raw.githubusercontent.com/thanhnguyennguyen/lazy/master/gittool.sh -o ~/gittool.sh
     `
-   - Setup     
+   - Setup  
+         - Install `jq` to parse JSON response (https://stedolan.github.io/jq/)
+         
+         for ubuntu:
+           sudo apt install jq
+
+         
          -  `alias gittool="~/gittool.sh"`
          - update config file ~/git/config.txt with format your_git_username:yourtoken (generate your token here https://github.com/settings/tokens/new)
    - Usage: 
