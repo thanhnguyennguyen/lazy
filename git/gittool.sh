@@ -69,7 +69,7 @@ createPull()
     $0 -a $response $currentUser
     $0 -l $response awaiting_review
 }
-content="(This content is created via [Gittool](https://github.com/thanhnguyennguyen/lazy/blob/master/gittool.sh)) \n"
+content="(This content is created via [Gittool](https://github.com/thanhnguyennguyen/lazy/tree/master/git)) \n"
 while [ "$1" != "" ]; do
     case $1 in
         -b  | --base )          base=$2
