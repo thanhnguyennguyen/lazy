@@ -41,6 +41,7 @@ then
 fi
 base=""
 token=$(cat ~/git/config.txt)
+username=$(echo $token | cut -d':' -f 1)
 checkRepo()
 {
     base=$(git config --get remote.origin.url)
@@ -63,14 +64,14 @@ createPull()
     fi
     baseBranch=$1
     title="$2"
-    body="$content$3"
+    body="$3$content"
     currentUser=$(echo $base | cut -d':' -f 2 | cut -d'/' -f 1)
     currentBranch=$(git branch | grep \* | cut -d ' ' -f2)
     response=$(curl -s -X POST https://api.github.com/repos/$pullRepo/pulls -u "$token" -d "{\"title\":\"$title\", \"base\":\"$baseBranch\", \"head\":\"$currentUser:$currentBranch\", \"body\": \"$body\"}" | jq -r '.number')
     $0 -a $response $currentUser
     $0 -l $response awaiting_review
 }
-content="(This content is created via [Gittool](https://github.com/thanhnguyennguyen/lazy/tree/master/git)) \n"
+content="\n(This content is created via [Gittool](https://github.com/thanhnguyennguyen/lazy/tree/master/git)) \n On behalf of [$username](https://github.com/$username)"
 while [ "$1" != "" ]; do
     case $1 in
         -b  | --base )          base=$2
@@ -97,7 +98,7 @@ while [ "$1" != "" ]; do
                                 fi;;
         -ap  | --approve-pull ) checkRepo
                                 pullNumber=$2
-                                content=$content$3
+                                content=$3$content
                                 #  submit a comment
                                 reviewId=$(curl -s -X POST https://api.github.com/repos/$repo/pulls/$pullNumber/reviews -u "$token" | jq -r '.id')
                                 echo https://api.github.com/repos/$repo/pulls/$pullNumber/reviews/$reviewId/events/ 
@@ -105,7 +106,7 @@ while [ "$1" != "" ]; do
                                 exit;;
         -cp  | --comment-pull ) checkRepo
                                 pullNumber=$2
-                                content=$content$3
+                                content=$3$content
                                 #  submit a comment
                                 reviewId=$(curl -s -X POST https://api.github.com/repos/$repo/pulls/$pullNumber/reviews -u "$token" | jq -r '.id')
                                 echo https://api.github.com/repos/$repo/pulls/$pullNumber/reviews/$reviewId/events/ 
@@ -114,7 +115,7 @@ while [ "$1" != "" ]; do
 
         -rp  | --reject-pull )  checkRepo
                                 pullNumber=$2
-                                content=$content$3
+                                content=$3$content
                                 #  submit a comment
                                 reviewId=$(curl -s -X POST https://api.github.com/repos/$repo/pulls/$pullNumber/reviews -u "$token" | jq -r '.id')
                                 echo https://api.github.com/repos/$repo/pulls/$pullNumber/reviews/$reviewId/events/ 
@@ -122,12 +123,12 @@ while [ "$1" != "" ]; do
                                 exit;;
         -i  | --issue )    checkRepo
                                 title=$2
-                                body=$content$3
+                                body=$3$content
                                 curl -s -X POST https://api.github.com/repos/$repo/issues?state=all/ -u "$token" --data "{\"title\":\"$title\", \"body\":\"$body\"}"
                                 exit;;
         -c  | --comment )       checkRepo
                                 number=$2
-                                content=$content$3
+                                content=$3$content
                                 #  submit a comment
                                 curl -s -X POST https://api.github.com/repos/$repo/issues/$number/comments?state=all/ -u "$token" -d "{\"body\":\"$content\"}"
                                 exit;;
