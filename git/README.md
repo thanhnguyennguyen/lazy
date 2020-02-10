@@ -25,7 +25,8 @@ alias gittool="~/gittool.sh"
     - gittool -ai ( --assigned-issues) : get list of open issues assigned to me
     - gittool -ap ( --approve-pull ) [pull request number] [comment message]: approve a pull request with a message
     - gittool -b  ( --base ) [git repo url] : set repo url
-    - gittool -c  ( --comment ) [issue/pull request number] [content]: comment on an issue/pull request
+    - gittool -c  ( --comment ) [issue number] [content]: comment on an issue
+    - gittool -cp  ( --comment-pull ) [pull request number] [content]: comment on a pull request
     - gittool -cl ( --close-issue ) [issue/pull request number] : close an issue/pull request
     - gittool -d  ( --done ) [Your commit message] [upstream/origin]: 
        automatically commit your code and push to remote github repo (Remember to add stages in advance)
