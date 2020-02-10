@@ -71,7 +71,7 @@ createPull()
     $0 -a $response $currentUser
     $0 -l $response awaiting_review
 }
-content="(\nThis content is created via [Gittool](https://github.com/thanhnguyennguyen/lazy/tree/master/git)) \n On behalf of [$username](https://github.com/$username)"
+content="\n(This content is created via [Gittool](https://github.com/thanhnguyennguyen/lazy/tree/master/git)) \n On behalf of [$username](https://github.com/$username)"
 while [ "$1" != "" ]; do
     case $1 in
         -b  | --base )          base=$2
