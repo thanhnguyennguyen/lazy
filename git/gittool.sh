@@ -6,7 +6,8 @@ usage()
       - gittool -ai ( --assigned-issues) : get list of open issues assigned to me
       - gittool -ap ( --approve-pull ) [pull request number] [comment message]: approve a pull request with a message
       - gittool -b  ( --base ) [git repo url] : set repo url
-      - gittool -c  ( --comment ) [issue/pull request number] [content]: comment on an issue/pull request
+      - gittool -c  ( --comment ) [issue number] [content]: comment on an issue
+      - gittool -cp  ( --comment-pull ) [pull request number] [content]: comment on a pull request
       - gittool -cl ( --close-issue ) [issue/pull request number] : close an issue/pull request
       - gittool -d  ( --done ) [Your commit message] [upstream/origin]: 
          automatically commit your code and push to remote github repo (Remember to add stages in advance)
@@ -102,6 +103,15 @@ while [ "$1" != "" ]; do
                                 echo https://api.github.com/repos/$repo/pulls/$pullNumber/reviews/$reviewId/events/ 
                                 curl -s -X POST https://api.github.com/repos/$repo/pulls/$pullNumber/reviews/$reviewId/events -u "$token" --data "{\"body\":\"$content\", \"event\":\"APPROVE\"}"
                                 exit;;
+        -cp  | --comment-pull ) checkRepo
+                                pullNumber=$2
+                                content=$content$3
+                                #  submit a comment
+                                reviewId=$(curl -s -X POST https://api.github.com/repos/$repo/pulls/$pullNumber/reviews -u "$token" | jq -r '.id')
+                                echo https://api.github.com/repos/$repo/pulls/$pullNumber/reviews/$reviewId/events/ 
+                                curl -s -X POST https://api.github.com/repos/$repo/pulls/$pullNumber/reviews/$reviewId/events -u "$token" --data "{\"body\":\"$content\", \"event\":\"COMMENT\"}"
+                                exit;;
+
         -rp  | --reject-pull )  checkRepo
                                 pullNumber=$2
                                 content=$content$3
@@ -142,6 +152,7 @@ while [ "$1" != "" ]; do
                                 exit;;
         -m  | --merge       )   checkRepo
                                 number=$2
+				$0 -cp $number "This PR seems to be OK. Merging it now !"
                                 curl -s -X PUT https://api.github.com/repos/$repo/pulls/$number/merge -u "$token"
                                 $0 -rl $number "awaiting_review"
                                 $0 -l $number "done"
