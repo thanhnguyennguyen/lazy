@@ -25,10 +25,10 @@
       - gittool -cl ( --close-issue ) [issue/pull request number] : close an issue/pull request
       - gittool -d  ( --done ) [Your commit message] [upstream/origin]: 
          automatically commit your code and push to remote github repo (Remember to add stages in advance)
-         If your repo is fotked from another one, please add upstream by: git remote add  upstream [url]
-                                   - upstream: by default, create new branch in origin and pull request to upstream repository
-                                   - origin: create PR to origin. don't touch to upstream
-                           if your repo is not a fork repo, let's leave it empty by default
+         - If your repo is forked from another one, please add upstream by: `git remote add  upstream [url]`
+            - upstream: by default, create new branch in origin and pull request to upstream repository
+            - origin: create PR to origin. don't touch to upstream
+         - if your repo is not a fork repo, let's leave it empty by default
       - gittool -h  ( --help ) : show helps
       - gittool -i  ( --issue ) [title] [content]: create new issue
       - gittool -l  ( --label ) [issue/pull request number] [label name] : label an issue/ pull request
