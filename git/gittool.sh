@@ -31,6 +31,7 @@ usage()
       - gittool --releases  : list all releases
       - gittool -s  ( --sync) : sync fork repo with upstream
       - gittool -t  ( --tag) [tag name] [release name] : tag and publish a release
+      - gittool -u  ( --upload) [tag name] [asset file name] : upload asset to tag release
       - gittool -v  ( --version ) : print version
     "
 }
