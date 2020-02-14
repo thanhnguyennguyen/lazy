@@ -301,7 +301,12 @@ while [ "$1" != "" ]; do
                                 ;;
         --releases )            checkRepo
                                 response=$(curl -s -X GET https://api.github.com/repos/$repo/releases -u "$token" | jq -r ".[] | .tag_name, .name, .html_url ")
-                                for i in "${response}"
+                                if [ ${#response[@]} = 0 ]
+                                then
+                                    echo NO RELEASE IN THIS REPO
+                                fi
+
+				for i in "${response}"
                                 do
                                     echo "$i\n"
                                 done
