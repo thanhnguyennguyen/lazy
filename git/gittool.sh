@@ -31,6 +31,7 @@ usage()
       - gittool --releases  : list all releases
       - gittool -s  ( --sync) : sync fork repo with upstream
       - gittool -t  ( --tag) [tag name] [release name] : tag and publish a release
+      - gittool -u  ( --upload) [tag name] [asset file name] : upload asset to tag release
       - gittool -v  ( --version ) : print version
     "
 }
@@ -311,7 +312,16 @@ while [ "$1" != "" ]; do
                                     echo "$i\n"
                                 done
                                 exit
+                              	;;
+	-u | --upload )         checkRepo
+				tagName=$2
+				fileName=$3
+				releaseId=$(curl -s -X GET https://api.github.com/repos/$repo/releases/tags/$tagName -u "$token" | jq -r ".id")
+                                curl  --data-binary @"$fileName"  -H "Content-Type: application/octet-stream" https://uploads.github.com/repos/$repo/releases/$releaseId/assets\?name\=$fileName -u "$token"
+
+                                exit
                                 ;;
+
     esac
         echo "Invalid option!"
         usage
