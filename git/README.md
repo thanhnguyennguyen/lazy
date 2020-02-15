@@ -7,7 +7,7 @@
   - Run `bash sync.sh`
   
 - Gittool 
-  - Download: curl -L https://raw.githubusercontent.com/thanhnguyennguyen/lazy/master/gittool.sh -o ~/gittool.sh
+  - Download: curl -L https://raw.githubusercontent.com/thanhnguyennguyen/lazy/master/git/gittool.sh -o ~/gittool.sh
   - Install jq to parse JSON response (https://stedolan.github.io/jq/)
   - alias gittool.sh
     ```
