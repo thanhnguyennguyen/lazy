@@ -212,11 +212,12 @@ while [ "$1" != "" ]; do
                                 then
                                     echo YOU HAVE NO OPENING PULL REQUEST
                                 fi
-
+				num=0
 				for ((i = 0; i < ${#titles[@]}; ++i)); do
                                     if [[ "${assignee[i]}" == *"$currentUser"* ]]
                                     then
-                                        echo -e "$i:\nTitle: ${titles[$i]}\nURL: ${urls[$i]}\nAuthor: ${assignee[i]}\n--------------\\n"
+					num=$((num + 1))
+                                        echo -e "$num:\nTitle: ${titles[$i]}\nURL: ${urls[$i]}\nAuthor: ${assignee[i]}\n--------------\\n"
                                     fi
                                 done
                                 exit
@@ -236,8 +237,8 @@ while [ "$1" != "" ]; do
                                 for ((i = 0; i < ${#titles[@]}; ++i)); do
                                     if [[ "${reviewers[i]}" == *"$currentUser"* ]]
                                     then
-                                        echo "$i: ${titles[$i]} ${urls[$i]} ${assignee[i]}"
-                                        num=$num+1
+					num=$((num + 1))
+                                        echo "$num: ${titles[$i]} ${urls[$i]} ${assignee[i]}"
                                     fi
                                 done
                                 if [ $num = 0 ]
