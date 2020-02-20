@@ -216,7 +216,7 @@ while [ "$1" != "" ]; do
 				for ((i = 0; i < ${#titles[@]}; ++i)); do
                                     if [[ "${assignee[i]}" == *"$currentUser"* ]]
                                     then
-                                        echo -e "$i\n:Title: ${titles[$i]}\nURL: ${urls[$i]}\nAuthor: ${assignee[i]}\n--------------\\n"
+                                        echo -e "$i:\nTitle: ${titles[$i]}\nURL: ${urls[$i]}\nAuthor: ${assignee[i]}\n--------------\\n"
                                     fi
                                 done
                                 exit
