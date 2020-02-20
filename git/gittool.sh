@@ -54,6 +54,11 @@ checkRepo()
         exit
     fi
     repo=$(echo $base | cut -d':' -f 2 | cut -d'.' -f 1)
+    upstream=$(git config --get remote.upstream.url)
+    if [[ "$upstream" != "" ]]
+    then
+        repo=$(echo $upstream | cut -d':' -f 2 | cut -d'.' -f 1)
+    fi
 }
 createPull()
 {   
@@ -254,9 +259,14 @@ while [ "$1" != "" ]; do
                                 then
                                     echo NO OPENING PULL REQUEST IN THIS REPO
                                 fi
+
                                 for ((i = 0; i < ${#titles[@]}; ++i)); do
-                                    echo "$i: ${titles[$i]} ${urls[$i]} ${assignee[i]}"
+                                    if [ "${pulls[i]}" = "null" ]
+                                    then
+                                        echo -e "$i:\nTitle: ${titles[$i]}\nURL: ${urls[$i]}\nAssignee: ${assignee[i]}\n\n"
+                                    fi
                                 done
+
                                 exit
                                 ;;
         -oi | --open-issues ) checkRepo
@@ -269,28 +279,37 @@ while [ "$1" != "" ]; do
                                 pulls=($(cat  tempPulls.txt | tr " " "_" | tr "\n" " "))
                                 assignee=($(cat  tempAssignee.txt | tr " " "_" | tr "\n" " "))
                                 rm tempTitles.txt tempUrls.txt tempPulls.txt tempAssignee.txt
-                                num=0
-                                for ((i = 0; i < ${#titles[@]}; ++i)); do
-                                    if [ "${pulls[i]}" = "null" ]
-                                    then
-                                        echo "$i: ${titles[$i]} ${urls[$i]} ${assignee[i]}"
-                                        num=$num+1
-                                    fi
-                                done
-                                if [ $num = 0 ]
+                                if [ ${#titles[@]} = 0 ]
                                 then
                                     echo NO OPENING ISSUE IN THIS REPO
-                                fi
+				fi
+
+				for ((i = 0; i < ${#titles[@]}; ++i)); do
+                                    if [ "${pulls[i]}" = "null" ]
+                                    then
+                                        echo -e "$i:\nTitle: ${titles[$i]}\nURL: ${urls[$i]}\nAssignee: ${assignee[i]}\n\n"
+                                    fi
+                                done
                                 exit
                                 ;;
-        -ai | --assigned-issues ) response=$(curl -s -X GET https://api.github.com/user/issues -u "$token" | jq -r ".[] | .title, .html_url ")
-                                if [ ${#response[@]} = 0 ]
+        -ai | --assigned-issues )
+				curl -s -X GET https://api.github.com/user/issues -u "$token" | jq -r ".[] | .title " > tempTitles.txt
+				curl -s -X GET https://api.github.com/user/issues -u "$token" | jq -r ".[] | .html_url " > tempUrls.txt
+                                curl -s -X GET https://api.github.com/user/issues -u "$token" | jq -r ".[] | .pull_request.html_url " > tempPulls.txt
+				
+				titles=($(cat  tempTitles.txt | tr " " "_" | tr "\n" " "))
+                                urls=($(cat  tempUrls.txt | tr " " "_" | tr "\n" " "))
+				pulls=($(cat  tempPulls.txt | tr " " "_" | tr "\n" " "))
+				rm tempTitles.txt tempUrls.txt tempPulls.txt
+				if [ ${#titles[@]} = 0 ]
                                 then
                                     echo NO ISSUE ASSIGNED TO YOU
                                 fi
-                                for i in "${response}"
-                                do
-                                    echo "$i\n"
+                                for ((i = 0; i < ${#titles[@]}; ++i)); do
+                                    if [ "${pulls[i]}" = "null" ]
+                                    then
+                                        echo -e "$i:\nTitle: ${titles[$i]}\nURL: ${urls[$i]}\n\n"
+                                    fi
                                 done
                                 exit
                                 ;;
