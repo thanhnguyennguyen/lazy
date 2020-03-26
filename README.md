@@ -7,3 +7,4 @@
  - [Scripts when I work at Zalora](https://github.com/thanhnguyennguyen/lazy/tree/master/zalora) `startPC` to start everything I need when I work at Zalora
  - [Custom terminal](https://github.com/thanhnguyennguyen/lazy/tree/master/custom_terminal): make my terminal more interesting
  - [Checkin bot](https://github.com/thanhnguyennguyen/check-in): TomoChain allows to work from home due to COVID-19 . But I need to check-in, check-out to a slack channel. This bot helps me to do those stuffs
+ - [Git reminder](https://github.com/thanhnguyennguyen/git-reminder): at 16:00 GMT+07 every weekdays, remind me all issues assigned to me, all PRs waiting for my review
