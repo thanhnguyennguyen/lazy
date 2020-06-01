@@ -2,6 +2,7 @@
 usage()
 {
     echo " gittool:
+      - gittool -cr  ( --create-repo ) [repo name]: create a public repository
       - gittool -a  ( --assign ) [issue/pull request number] [assignee]: assign an issue/pull request to an assignee
       - gittool -ai ( --assigned-issues) : get list of open issues assigned to me
       - gittool -ap ( --approve-pull ) [pull request number] [comment message]: approve a pull request with a message
@@ -131,6 +132,9 @@ while [ "$1" != "" ]; do
                                 title=$2
                                 body=$3$content
                                 curl -s -X POST https://api.github.com/repos/$repo/issues?state=all/ -u "$token" --data "{\"title\":\"$title\", \"body\":\"$body\"}"
+                                exit;;
+        -c  | --comment )       repo=$2
+                                curl -s -X POST https://api.github.com/repos -u "$token"--data "{\"name\":\"$repo\"}"
                                 exit;;
         -c  | --comment )       checkRepo
                                 number=$2
