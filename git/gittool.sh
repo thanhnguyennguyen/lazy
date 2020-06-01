@@ -4,6 +4,7 @@ usage()
     echo " gittool:
       - gittool -a  ( --assign ) [issue/pull request number] [assignee]: assign an issue/pull request to an assignee
       - gittool -ai ( --assigned-issues) : get list of open issues assigned to me
+      - gittool -ra ( --remove-assignee) : remove assignee from the given issue
       - gittool -ap ( --approve-pull ) [pull request number] [comment message]: approve a pull request with a message
       - gittool -b  ( --base ) [git repo url] : set repo url
       - gittool -c  ( --comment ) [issue number] [content]: comment on an issue
@@ -142,6 +143,11 @@ while [ "$1" != "" ]; do
                                 checkRepo
                                 assignee=$3
                                 curl -s -X POST https://api.github.com/repos/$repo/issues/$number/assignees?state=all/ -u "$token" -d "{\"assignees\":\"$assignee\"}"
+                                exit;;
+        -ra  | --remove-assignee ) number=$2
+                                checkRepo
+                                assignee=$3
+                                curl -s -X DELETE https://api.github.com/repos/$repo/issues/$number/assignees?state=all/ -u "$token" -d "{\"assignees\":\"$assignee\"}"
                                 exit;;
         -l  | --label )         checkRepo
                                 number=$2
