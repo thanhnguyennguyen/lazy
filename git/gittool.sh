@@ -134,7 +134,7 @@ while [ "$1" != "" ]; do
                                 curl -s -X POST https://api.github.com/repos/$repo/issues?state=all/ -u "$token" --data "{\"title\":\"$title\", \"body\":\"$body\"}"
                                 exit;;
         -cr  | --create-repo )  repo=$2
-                                curl -s -X POST https://api.github.com/repos -u "$token" --data "{\"name\":\"$repo\"}"
+                                curl -s -X POST https://api.github.com/user/repos -u "$token" --data "{\"name\":\"$repo\"}"
                                 exit;;
         -c  | --comment )       checkRepo
                                 number=$2
