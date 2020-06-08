@@ -287,11 +287,12 @@ while [ "$1" != "" ]; do
                                 then
                                     echo NO OPENING ISSUE IN THIS REPO
 				fi
-
+				index=0
 				for ((i = 0; i < ${#titles[@]}; ++i)); do
                                     if [ "${pulls[i]}" = "null" ]
                                     then
-                                        echo -e "$i:\nTitle: ${titles[$i]}\nURL: ${urls[$i]}\nAssignee: ${assignee[i]}\n\n"
+                                        echo -e "$index:\nTitle: ${titles[$i]}\nURL: ${urls[$i]}\nAssignee: ${assignee[i]}\n\n"
+					index=$((index + 1))
                                     fi
                                 done
                                 exit
@@ -309,10 +310,12 @@ while [ "$1" != "" ]; do
                                 then
                                     echo NO ISSUE ASSIGNED TO YOU
                                 fi
+				index=0
                                 for ((i = 0; i < ${#titles[@]}; ++i)); do
                                     if [ "${pulls[i]}" = "null" ]
                                     then
-                                        echo -e "$i:\nTitle: ${titles[$i]}\nURL: ${urls[$i]}\n\n"
+                                        echo -e "$index:\nTitle: ${titles[$i]}\nURL: ${urls[$i]}\n\n"
+					index=$((index + 1))
                                     fi
                                 done
                                 exit
