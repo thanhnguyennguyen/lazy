@@ -133,8 +133,8 @@ while [ "$1" != "" ]; do
                                 body=$3$content
                                 curl -s -X POST https://api.github.com/repos/$repo/issues?state=all/ -u "$token" --data "{\"title\":\"$title\", \"body\":\"$body\"}"
                                 exit;;
-        -c  | --comment )       repo=$2
-                                curl -s -X POST https://api.github.com/repos -u "$token"--data "{\"name\":\"$repo\"}"
+        -cr  | --create-repo )  repo=$2
+                                curl -s -X POST https://api.github.com/repos -u "$token" --data "{\"name\":\"$repo\"}"
                                 exit;;
         -c  | --comment )       checkRepo
                                 number=$2
