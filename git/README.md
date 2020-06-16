@@ -5,7 +5,12 @@
   - Add upstream:
   ``` git remote add upstream git@github.com:....```
   - Run `bash sync.sh`
-  
+- Script to add branch name as prefix of all commits:
+
+```
+curl https://gist.githubusercontent.com/bartoszmajsak/1396344/raw/bff6973325b159254a3ba13c5cb9ac8fda8e382b/prepare-commit-msg.sh > .git/hooks/prepare-commit-msg && chmod u+x .git/hooks/prepare-commit-msg
+```  
+
 - Gittool 
   - Download: curl -L https://raw.githubusercontent.com/thanhnguyennguyen/lazy/master/git/gittool.sh -o ~/gittool.sh
   - Install jq to parse JSON response (https://stedolan.github.io/jq/)
