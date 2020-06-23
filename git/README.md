@@ -52,3 +52,11 @@ curl https://gist.githubusercontent.com/bartoszmajsak/1396344/raw/bff6973325b159
       - gittool -t  ( --tag) [tag name] [release name] : tag and publish a release
       - gittool -u  ( --upload) [tag name] [asset file name] : upload asset to tag release
       - gittool -v  ( --version ) : print version
+
+
+
+- Delete local branches which already merged to master
+```
+git branch --merged master | grep -v '^[ *]*master$' | xargs git branch -d
+```
+
