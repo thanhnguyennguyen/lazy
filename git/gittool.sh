@@ -2,6 +2,7 @@
 usage()
 {
     echo " gittool:
+      - gittool -cr  ( --create-repo ) [repo name]: create a public repository
       - gittool -a  ( --assign ) [issue/pull request number] [assignee]: assign an issue/pull request to an assignee
       - gittool -ai ( --assigned-issues) : get list of open issues assigned to me
       - gittool -ra ( --remove-assignee) : remove assignee from the given issue
@@ -132,6 +133,9 @@ while [ "$1" != "" ]; do
                                 title=$2
                                 body=$3$content
                                 curl -s -X POST https://api.github.com/repos/$repo/issues?state=all/ -u "$token" --data "{\"title\":\"$title\", \"body\":\"$body\"}"
+                                exit;;
+        -cr  | --create-repo )  repo=$2
+                                curl -s -X POST https://api.github.com/user/repos -u "$token" --data "{\"name\":\"$repo\"}"
                                 exit;;
         -c  | --comment )       checkRepo
                                 number=$2
@@ -289,11 +293,12 @@ while [ "$1" != "" ]; do
                                 then
                                     echo NO OPENING ISSUE IN THIS REPO
 				fi
-
+				index=0
 				for ((i = 0; i < ${#titles[@]}; ++i)); do
                                     if [ "${pulls[i]}" = "null" ]
                                     then
-                                        echo -e "$i:\nTitle: ${titles[$i]}\nURL: ${urls[$i]}\nAssignee: ${assignee[i]}\n\n"
+                                        echo -e "$index:\nTitle: ${titles[$i]}\nURL: ${urls[$i]}\nAssignee: ${assignee[i]}\n\n"
+					index=$((index + 1))
                                     fi
                                 done
                                 exit
@@ -311,10 +316,12 @@ while [ "$1" != "" ]; do
                                 then
                                     echo NO ISSUE ASSIGNED TO YOU
                                 fi
+				index=0
                                 for ((i = 0; i < ${#titles[@]}; ++i)); do
                                     if [ "${pulls[i]}" = "null" ]
                                     then
-                                        echo -e "$i:\nTitle: ${titles[$i]}\nURL: ${urls[$i]}\n\n"
+                                        echo -e "$index:\nTitle: ${titles[$i]}\nURL: ${urls[$i]}\n\n"
+					index=$((index + 1))
                                     fi
                                 done
                                 exit
