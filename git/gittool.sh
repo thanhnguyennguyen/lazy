@@ -91,7 +91,8 @@ while [ "$1" != "" ]; do
                                 then
                                     git commit -m "$commitMessage"
                                     git push --set-upstream origin $(git branch | grep \* | cut -d ' ' -f2)
-                                    createPull master "$commitMessage" "$commitMessage" $3
+                                    baseBranch=$(curl -s -X GET https://api.github.com/repos/$repo -u "$token" | jq -r '.default_branch')
+                                    createPull "$baseBranch" "$commitMessage" "$commitMessage" $3
                                     exit
                                 fi;;
         -r  | --review )        checkRepo
